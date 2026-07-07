@@ -34,6 +34,13 @@ void Screen::loadSettings(QSettingsProxy &settings)
   readSettings(settings, fixes(), "fix", 0, static_cast<int>(NumFixes));
 
   m_Aliases = Settings::value(Settings::Screen::Aliases.arg(name)).toStringList();
+
+  if (settings.contains("canvasX") && settings.contains("canvasY")) {
+    m_CanvasPos = QPoint(settings.value("canvasX").toInt(), settings.value("canvasY").toInt());
+    m_HasCanvasPos = true;
+  } else {
+    m_HasCanvasPos = false;
+  }
 }
 
 void Screen::saveSettings(QSettingsProxy &settings) const
@@ -52,6 +59,11 @@ void Screen::saveSettings(QSettingsProxy &settings) const
   writeSettings(settings, modifiers(), "modifier");
   writeSettings(settings, switchCorners(), "switchCorner");
   writeSettings(settings, fixes(), "fix");
+
+  if (m_HasCanvasPos) {
+    settings.setValue("canvasX", m_CanvasPos.x());
+    settings.setValue("canvasY", m_CanvasPos.y());
+  }
 }
 
 QString Screen::screensSection() const
@@ -83,5 +95,26 @@ bool Screen::operator==(const Screen &screen) const
 {
   return m_Name == screen.m_Name && m_Aliases == screen.m_Aliases && m_Modifiers == screen.m_Modifiers &&
          m_SwitchCorners == screen.m_SwitchCorners && m_SwitchCornerSize == screen.m_SwitchCornerSize &&
-         m_Fixes == screen.m_Fixes && m_Swapped == screen.m_Swapped && m_isServer == screen.m_isServer;
+         m_Fixes == screen.m_Fixes && m_Swapped == screen.m_Swapped && m_isServer == screen.m_isServer &&
+         m_HasCanvasPos == screen.m_HasCanvasPos &&
+         (!m_HasCanvasPos || m_CanvasPos == screen.m_CanvasPos);
+}
+
+void Screen::setMonitors(const QList<QRect> &monitors)
+{
+  QRect box;
+  for (const auto &r : monitors) {
+    box = box.isNull() ? r : box.united(r);
+  }
+  if (box.isNull()) {
+    m_Monitors = monitors;
+    return;
+  }
+
+  QList<QRect> normalised;
+  normalised.reserve(monitors.size());
+  for (const auto &r : monitors) {
+    normalised.append(r.translated(-box.topLeft()));
+  }
+  m_Monitors = normalised;
 }

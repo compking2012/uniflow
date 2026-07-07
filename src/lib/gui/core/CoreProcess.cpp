@@ -575,6 +575,29 @@ void CoreProcess::onCoreIpcMessageReceived(const QString &command, const QString
   } else if (command == "connectedClients") {
     const auto clients = args.isEmpty() ? QStringList() : args.split(",");
     Q_EMIT connectedClientsChanged(clients);
+  } else if (command == "clientMonitors") {
+    // format: "<screen>:x,y,w,h;x,y,w,h|<screen>:x,y,w,h|..."
+    QMap<QString, QList<QRect>> monitors;
+    const auto entries = args.isEmpty() ? QStringList() : args.split("|");
+    for (const auto &entry : entries) {
+      const int colon = entry.indexOf(':');
+      if (colon < 0) {
+        continue;
+      }
+      const QString name = entry.left(colon);
+      const QString rectList = entry.mid(colon + 1);
+      QList<QRect> rects;
+      const auto rectStrings = rectList.isEmpty() ? QStringList() : rectList.split(";");
+      for (const auto &rectString : rectStrings) {
+        const auto parts = rectString.split(",");
+        if (parts.size() != 4) {
+          continue;
+        }
+        rects.append(QRect(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), parts[3].toInt()));
+      }
+      monitors.insert(name, rects);
+    }
+    Q_EMIT clientMonitorsChanged(monitors);
   } else if (command == "secureSocket") {
     Q_EMIT secureSocket(true);
     if (args != m_secureSocketVersion) {

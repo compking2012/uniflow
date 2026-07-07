@@ -198,6 +198,11 @@ public:
   */
   void getClients(std::vector<std::string> &list) const;
   void sendConnectedClientsIpc() const;
+
+  //! Send the per-monitor layout of every connected screen (primary and
+  //! clients) to the GUI over IPC so it can arrange individual monitors.
+  void sendClientMonitorsIpc() const;
+
   size_t getMaximumClipboardSizeBytes() const;
 
   //@}
@@ -253,6 +258,12 @@ private:
   // adjusts x and y or neither to avoid ending up in a jump zone
   // after entering the client in the given direction.
   void avoidJumpZone(const BaseClientProxy *, Direction, int32_t &x, int32_t &y) const;
+
+  // after computing a machine-level entry point, snap the cursor onto the
+  // actual destination monitor whose edge faces the entry direction (so we
+  // never land in a multi-monitor dead zone), then move it clear of the
+  // jump zone.  supersedes avoidJumpZone for the entry path.
+  void adjustEntryToMonitor(const BaseClientProxy *, Direction, int32_t &x, int32_t &y) const;
 
   // test if a switch is permitted.  this includes testing user
   // options like switch delay and tracking any state required to

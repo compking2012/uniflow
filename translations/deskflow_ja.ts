@@ -910,7 +910,7 @@ Additionally, check you are able to %1 the server config file: %2</source>
     <name>ScreenSetupModel</name>
     <message>
         <source>&lt;center&gt;Screen: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;Double click to edit settings&lt;br&gt;Drag screen to the trashcan to remove it</source>
-        <translation>&lt;center&gt;コンピューター: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;ダブルクリックで設定&lt;br&gt;ゴミ箱にドラッグして削除</translation>
+        <translation type="vanished">&lt;center&gt;コンピューター: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;ダブルクリックで設定&lt;br&gt;ゴミ箱にドラッグして削除</translation>
     </message>
 </context>
 <context>
@@ -944,15 +944,15 @@ Additionally, check you are able to %1 the server config file: %2</source>
     </message>
     <message>
         <source>Drag a computer from the grid to the trashcan to remove it.</source>
-        <translation>コンピューターを削除するには、ゴミ箱にドラッグしてください。</translation>
+        <translation type="vanished">コンピューターを削除するには、ゴミ箱にドラッグしてください。</translation>
     </message>
     <message>
         <source>Configure the layout of your computer displays by dragging to where you want.</source>
-        <translation>コンピューターの画面を置きたい場所にドラッグして画面配置を設定してください。</translation>
+        <translation type="vanished">コンピューターの画面を置きたい場所にドラッグして画面配置を設定してください。</translation>
     </message>
     <message>
         <source>Drag to the grid to add a new computer.</source>
-        <translation>新しいコンピューターを追加するには、下の枠にドラッグしてください。</translation>
+        <translation type="vanished">新しいコンピューターを追加するには、下の枠にドラッグしてください。</translation>
     </message>
     <message>
         <source>Hotkeys</source>
@@ -1083,6 +1083,18 @@ Enabling this setting will disable the server config GUI.</source>
         <translation>設定ファイルのパス</translation>
     </message>
     <message>
+        <source>Monitor Layout...</source>
+        <translation type="vanished">モニター配置…</translation>
+    </message>
+    <message>
+        <source>Monitor Layout</source>
+        <translation type="vanished">モニター配置</translation>
+    </message>
+    <message>
+        <source>Add at least two screens before arranging their monitors.</source>
+        <translation type="vanished">モニターを配置する前に、画面を2台以上追加してください。</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation>%1 設定 (*.conf);;すべてのファイル (*.*)</translation>
@@ -1094,6 +1106,14 @@ Enabling this setting will disable the server config GUI.</source>
     <message>
         <source>Enable lock to computer at startup</source>
         <translation>起動時にコンピューター間移動のロックを有効にする</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1365,6 +1385,28 @@ Enabling this setting will disable the server config GUI.</source>
     <message>
         <source>Encryption Disabled</source>
         <translation>暗号化無効</translation>
+    </message>
+</context>
+<context>
+    <name>deskflow::gui::MonitorLayoutDialog</name>
+    <message>
+        <source>Monitor Layout</source>
+        <translation type="vanished">モニター配置</translation>
+    </message>
+    <message>
+        <source>Drag each machine&apos;s monitors so they sit where they physically are relative to the other machines. Touching edges become direct cursor crossings.</source>
+        <translation type="vanished">各コンピューターのモニターを、他のコンピューターに対する実際の物理的な位置関係になるようにドラッグしてください。接している端はカーソルが直接行き来できる境界になります。</translation>
+    </message>
+    <message>
+        <source>Reset Arrangement</source>
+        <translation type="vanished">配置をリセット</translation>
+    </message>
+</context>
+<context>
+    <name>deskflow::gui::MonitorLayoutView</name>
+    <message>
+        <source>Remove Computer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

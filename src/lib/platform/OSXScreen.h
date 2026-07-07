@@ -57,6 +57,7 @@ public:
   void *getEventTarget() const override;
   bool getClipboard(ClipboardID id, IClipboard *) const override;
   void getShape(int32_t &x, int32_t &y, int32_t &width, int32_t &height) const override;
+  void getMonitors(std::vector<MonitorInfo> &monitors) const override;
   void getCursorPos(int32_t &x, int32_t &y) const override;
 
   // IPrimaryScreen overrides
@@ -231,6 +232,9 @@ private:
   int32_t m_x, m_y;
   int32_t m_w, m_h;
   int32_t m_xCenter, m_yCenter;
+
+  // geometry of each individual display making up this screen
+  std::vector<MonitorInfo> m_monitors;
 
   // mouse state
   mutable int32_t m_xCursor, m_yCursor;

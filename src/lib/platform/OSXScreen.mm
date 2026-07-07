@@ -236,6 +236,15 @@ void OSXScreen::getShape(int32_t &x, int32_t &y, int32_t &w, int32_t &h) const
   h = m_h;
 }
 
+void OSXScreen::getMonitors(std::vector<MonitorInfo> &monitors) const
+{
+  if (m_monitors.empty()) {
+    IScreen::getMonitors(monitors);
+    return;
+  }
+  monitors = m_monitors;
+}
+
 void OSXScreen::getCursorPos(int32_t &x, int32_t &y) const
 {
   CGEventRef event = CGEventCreate(nullptr);
@@ -1328,12 +1337,19 @@ bool OSXScreen::updateScreenShape()
     return false;
   }
 
-  // get smallest rect enclosing all display rects
+  // get smallest rect enclosing all display rects and record the
+  // geometry of each individual display
   CGRect totalBounds = CGRectZero;
+  std::vector<MonitorInfo> monitors;
+  monitors.reserve(displayCount);
   for (CGDisplayCount i = 0; i < displayCount; ++i) {
     CGRect bounds = CGDisplayBounds(displays[i]);
     totalBounds = CGRectUnion(totalBounds, bounds);
+    monitors.push_back(MonitorInfo{
+        (int32_t)bounds.origin.x, (int32_t)bounds.origin.y, (int32_t)bounds.size.width, (int32_t)bounds.size.height
+    });
   }
+  m_monitors = std::move(monitors);
 
   // get shape of default screen
   m_x = (int32_t)totalBounds.origin.x;

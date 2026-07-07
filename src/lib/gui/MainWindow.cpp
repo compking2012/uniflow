@@ -269,6 +269,7 @@ void MainWindow::connectSlots()
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::trayIconActivated);
 
   connect(&m_coreProcess, &CoreProcess::connectedClientsChanged, this, &MainWindow::serverClientsChanged);
+  connect(&m_coreProcess, &CoreProcess::clientMonitorsChanged, this, &MainWindow::serverClientMonitorsChanged);
   connect(&m_coreProcess, &CoreProcess::unrecognisedClient, this, &MainWindow::handleUnrecognisedClient);
   connect(&m_coreProcess, &CoreProcess::connectionRefused, this, &MainWindow::handleConnectionRefused);
   connect(&m_coreProcess, &CoreProcess::retryIn, this, &MainWindow::updateTimeoutDelay);
@@ -608,6 +609,7 @@ void MainWindow::serverConnectionConfigureClient(const QString &clientName)
 {
   m_serverConfigDialogVisible = true;
   ServerConfigDialog dialog(this, m_serverConfig);
+  dialog.setMonitorLayouts(m_clientMonitors);
   if (dialog.addClient(clientName) && dialog.exec() == QDialog::Accepted) {
     m_coreProcess.restart();
   }
@@ -778,7 +780,7 @@ void MainWindow::handleUnrecognisedClient(const QString &clientName)
   if (Settings::value(Settings::Server::ExternalConfig).toBool())
     return;
 
-  if (m_serverConfig.isFull() || m_serverConfig.screenExists(clientName))
+  if (m_serverConfig.screenExists(clientName))
     return;
 
   m_newClientPromptShowing = true;
@@ -1076,6 +1078,7 @@ void MainWindow::updateText()
 void MainWindow::showConfigureServer(const QString &message)
 {
   ServerConfigDialog dialog(this, serverConfig());
+  dialog.setMonitorLayouts(m_clientMonitors);
   dialog.message(message);
   if ((dialog.exec() == QDialog::Accepted) && m_coreProcess.isStarted()) {
     m_coreProcess.restart();
@@ -1198,6 +1201,13 @@ void MainWindow::serverClientsChanged(const QStringList &clients)
   if (m_coreProcess.mode() != CoreMode::Server || !m_coreProcess.isStarted())
     return;
   m_statusBar->setServerClients(clients);
+}
+
+void MainWindow::serverClientMonitorsChanged(const QMap<QString, QList<QRect>> &monitors)
+{
+  // remember the latest per-machine monitor layout so the monitor layout
+  // editor (in the server config dialog) can arrange individual monitors.
+  m_clientMonitors = monitors;
 }
 
 void MainWindow::daemonIpcClientConnectionFailed()

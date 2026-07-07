@@ -10,29 +10,18 @@
 
 class ScreenList : public QList<Screen>
 {
-  int m_width = 5;
-
 public:
-  explicit ScreenList(int width = 5);
+  ScreenList() = default;
 
   /**
-   * @brief addScreenByPriority adds a new screen according to the following
-   * priority: 1.left side of the server 2.right side of the server 3.top 4.down
-   * 5.top left-hand diagonally
-   * 6.top right-hand diagonally
-   * 7.bottom right-hand diagonally
-   * 8.bottom left-hand diagonally
-   * 9.In case all places from the list have already booked, place in any spare
-   * place
+   * @brief addScreen appends a new screen to the list, choosing an initial
+   * canvas position that places it just to the right of the server's
+   * screen (or the rightmost known screen if there is no server yet),
+   * offset far enough to avoid overlapping any existing screen's monitor
+   * bounding box.  Falls back to the origin if this is the first screen.
    * @param newScreen
    */
-  void addScreenByPriority(const Screen &newScreen);
-
-  /**
-   * @brief addScreenToFirstEmpty adds screen into the first empty place
-   * @param newScreen
-   */
-  void addScreenToFirstEmpty(const Screen &newScreen);
+  void addScreen(Screen newScreen);
 
   /**
    * @brief Returns true if screens are equal

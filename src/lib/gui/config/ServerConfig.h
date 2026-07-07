@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "common/Constants.h"
 #include "gui/Hotkey.h"
+#include "gui/config/MonitorLayoutLinks.h"
 #include "gui/config/ScreenConfig.h"
 #include "gui/config/ScreenList.h"
 
@@ -20,14 +20,16 @@ class QSettings;
 class QString;
 class QFile;
 class ServerConfigDialog;
+class GuiServerConfigTests;
 
 class ServerConfig : public ScreenConfig
 {
   friend class ServerConfigDialog;
+  friend class GuiServerConfigTests;
   friend QTextStream &operator<<(QTextStream &outStream, const ServerConfig &config);
 
 public:
-  explicit ServerConfig(int columns = kServerGridWidth, int rows = kServerGridHeight);
+  explicit ServerConfig();
   ~ServerConfig() = default;
 
   bool operator==(const ServerConfig &sc) const;
@@ -48,7 +50,6 @@ public:
   bool save(const QString &fileName) const;
   bool screenExists(const QString &screenName) const;
   void save(QFile &file) const;
-  bool isFull() const;
   void commit();
   int numScreens() const;
   QString getServerName() const;
@@ -71,7 +72,7 @@ private:
   }
   void addScreen(const Screen &screen)
   {
-    m_Screens.append(screen);
+    m_Screens.addScreen(screen);
   }
   void setConfigFile(const QString &configFile) const;
   void setUseExternalConfig(bool useExternalConfig) const;
@@ -79,16 +80,12 @@ private:
   {
     return m_Hotkeys;
   }
-  int adjacentScreenIndex(int idx, int deltaColumn, int deltaRow) const;
   bool findScreenName(const QString &name, int &index);
-  bool fixNoServer(const QString &name, int &index);
 
 private:
   HotkeyList m_Hotkeys;
 
   ScreenList m_Screens;
-  int m_columns;
-  int m_rows;
 };
 
 QTextStream &operator<<(QTextStream &outStream, const ServerConfig &config);

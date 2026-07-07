@@ -8,11 +8,13 @@
 
 #pragma once
 
-#include "ScreenSetupModel.h"
 #include "common/NetworkProtocol.h"
 #include "config/ServerConfig.h"
 
 #include <QDialog>
+#include <QList>
+#include <QMap>
+#include <QRect>
 
 class QItemSelection;
 
@@ -29,6 +31,12 @@ public:
   ~ServerConfigDialog() override;
   bool addClient(const QString &clientName);
 
+  //! Provide each connected machine's real monitor layout (name -> monitor
+  //! rects, in that machine's own virtual-desktop coordinates) so the
+  //! canvas can render each computer's actual, live display arrangement.
+  //! Safe to call while the dialog is open -- refreshes shapes in place.
+  void setMonitorLayouts(const QMap<QString, QList<QRect>> &layouts);
+
 public Q_SLOTS:
   void accept() override;
   void reject() override;
@@ -36,9 +44,6 @@ public Q_SLOTS:
   {
     m_message = message;
   }
-
-protected Q_SLOTS:
-  void onScreenRemoved();
 
 protected:
   void addClient();
@@ -84,18 +89,12 @@ protected:
   {
     m_originalServerConfig = s;
   }
-  ScreenSetupModel &model()
-  {
-    return m_screenSetupModel;
-  }
 
 private:
   void loadFromConfig();
   void initConnections() const;
   std::unique_ptr<Ui::ServerConfigDialog> ui;
   QString m_message = "";
-  int m_columns;
-  int m_rows;
   ServerConfig &m_originalServerConfig;
   NetworkProtocol m_protocol;
   bool m_enableClipboard;
@@ -113,7 +112,6 @@ private:
   bool m_defaultLockToComputerState;
   QString m_originalServerConfigUsesExternalFile;
   ServerConfig m_serverConfig;
-  ScreenSetupModel m_screenSetupModel;
 
 private Q_SLOTS:
   void onChange();

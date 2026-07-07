@@ -45,22 +45,6 @@
           <number>6</number>
          </property>
          <item>
-          <widget class="TrashScreenWidget" name="lblRemoveScreen">
-           <property name="acceptDrops">
-            <bool>true</bool>
-           </property>
-           <property name="toolTip">
-            <string>Drag a computer from the grid to the trashcan to remove it.</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::Shape::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Shadow::Raised</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
           <spacer name="horizontalSpacer_21">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
@@ -88,7 +72,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Configure the layout of your computer displays by dragging to where you want.</string>
+            <string>Drag each computer's monitors to arrange them. Double-click to edit a computer's settings, or right-click (or press Delete) to remove it.</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -117,7 +101,7 @@
          <item>
           <widget class="NewScreenWidget" name="lblNewScreen">
            <property name="toolTip">
-            <string>Drag to the grid to add a new computer.</string>
+            <string>Drag to the canvas to add a new computer.</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Shape::StyledPanel</enum>
@@ -146,7 +130,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="ScreenSetupView" name="screenSetupView">
+        <widget class="deskflow::gui::MonitorLayoutView" name="screenSetupView">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -975,15 +959,10 @@ Enabling this setting will disable the server config GUI.</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ScreenSetupView</class>
-   <extends>QTableView</extends>
-   <header>widgets/ScreenSetupView.h</header>
+   <class>deskflow::gui::MonitorLayoutView</class>
+   <extends>QGraphicsView</extends>
+   <header>widgets/MonitorLayoutView.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>TrashScreenWidget</class>
-   <extends>QLabel</extends>
-   <header>widgets/TrashScreenWidget.h</header>
   </customwidget>
   <customwidget>
    <class>NewScreenWidget</class>

@@ -23,6 +23,7 @@
 #include "server/ClientListener.h"
 #include "server/ClientProxy.h"
 #include "server/ClientProxyUnknown.h"
+#include "server/MonitorGeometry.h"
 #include "server/PrimaryClient.h"
 
 #ifdef _WIN32
@@ -255,6 +256,7 @@ void Server::adoptClient(BaseClientProxy *client)
   LOG_DEBUG("client \"%s\" has connected", getName(client).c_str());
   ipcSendConnectionState(deskflow::core::ConnectionState::Connected);
   sendConnectedClientsIpc();
+  sendClientMonitorsIpc();
 
   // send configuration options to client
   sendOptions(client);
@@ -310,6 +312,23 @@ void Server::sendConnectedClientsIpc() const
     }
   }
   ipcSendToClient("connectedClients", clientList.join(","));
+}
+
+void Server::sendClientMonitorsIpc() const
+{
+  // format: "<screen>:x,y,w,h;x,y,w,h|<screen>:x,y,w,h|..."  includes the
+  // primary (server) screen so the GUI can arrange every machine's monitors.
+  QStringList entries;
+  for (const auto &[name, proxy] : m_clients) {
+    std::vector<MonitorInfo> monitors;
+    proxy->getMonitors(monitors);
+    QStringList rects;
+    for (const auto &m : monitors) {
+      rects.append(QStringLiteral("%1,%2,%3,%4").arg(m.x).arg(m.y).arg(m.w).arg(m.h));
+    }
+    entries.append(QString::fromStdString(name) + ":" + rects.join(";"));
+  }
+  ipcSendToClient("clientMonitors", entries.join("|"));
 }
 
 std::string Server::getName(const BaseClientProxy *client) const
@@ -716,7 +735,11 @@ BaseClientProxy *Server::mapToNeighbor(BaseClientProxy *src, Direction srcSide, 
   // to avoid the jump zone.  if entering a side that doesn't have
   // a neighbor (i.e. an asymmetrical side) then we don't need to
   // move inwards because that side can't provoke a jump.
-  avoidJumpZone(dst, srcSide, x, y);
+  //
+  // also snap the cursor onto the actual destination monitor whose edge
+  // faces the entry direction, so a multi-monitor destination never lands
+  // the cursor in an internal dead zone.
+  adjustEntryToMonitor(dst, srcSide, x, y);
 
   return dst;
 }
@@ -764,6 +787,70 @@ void Server::avoidJumpZone(const BaseClientProxy *dst, Direction dir, int32_t &x
 
   case NoDirection:
     assert(0 && "bad direction");
+  }
+}
+
+void Server::adjustEntryToMonitor(const BaseClientProxy *dst, Direction dir, int32_t &x, int32_t &y) const
+{
+  using enum Direction;
+
+  std::vector<MonitorInfo> monitors;
+  dst->getMonitors(monitors);
+  if (monitors.empty()) {
+    // nothing to snap to; fall back to the legacy jump-zone avoidance
+    avoidJumpZone(dst, dir, x, y);
+    return;
+  }
+
+  // when we travelled in direction 'dir' the neighbor lies on that side and
+  // we enter it from its opposite edge:
+  //   Left   -> enter destination's right edge   (perpendicular coord: y)
+  //   Right  -> enter destination's left edge    (perpendicular coord: y)
+  //   Top    -> enter destination's bottom edge  (perpendicular coord: x)
+  //   Bottom -> enter destination's top edge     (perpendicular coord: x)
+  const bool horizontal = (dir == Left || dir == Right);
+  const int32_t perp = horizontal ? y : x;
+
+  // pick the destination monitor whose entering edge is most exposed toward
+  // the entry direction, among those spanning the perpendicular entry coord.
+  int best = chooseEntryMonitor(monitors, dir, perp);
+
+  if (best < 0) {
+    // entered opposite a dead zone; fall back to the nearest monitor and
+    // clamp the entry coordinate into it
+    best = findMonitor(monitors, x, y);
+    const MonitorInfo &m = monitors[static_cast<size_t>(best)];
+    if (y < m.y) {
+      y = m.y;
+    } else if (y >= m.y + m.h) {
+      y = m.y + m.h - 1;
+    }
+    if (x < m.x) {
+      x = m.x;
+    } else if (x >= m.x + m.w) {
+      x = m.x + m.w - 1;
+    }
+  }
+
+  const MonitorInfo &m = monitors[static_cast<size_t>(best)];
+  const int32_t z = getJumpZoneSize(dst); // nonzero only for the primary screen
+
+  // place the cursor just inside the entering edge (clear of the jump zone)
+  switch (dir) {
+  case Left:
+    x = m.x + m.w - 1 - z;
+    break;
+  case Right:
+    x = m.x + z;
+    break;
+  case Top:
+    y = m.y + m.h - 1 - z;
+    break;
+  case Bottom:
+    y = m.y + z;
+    break;
+  case NoDirection:
+    break;
   }
 }
 
@@ -1145,6 +1232,9 @@ void Server::handleShapeChanged(BaseClientProxy *client)
       onMouseMoveSecondary(0, 0);
     }
   }
+
+  // the monitor layout may have changed too; refresh the GUI
+  sendClientMonitorsIpc();
 }
 
 void Server::handleClipboardGrabbed(const Event &event, BaseClientProxy *grabber)
@@ -1283,6 +1373,7 @@ void Server::handleClientDisconnected(BaseClientProxy *client)
   using enum deskflow::core::ConnectionState;
   ipcSendConnectionState(m_clients.size() <= 1 ? Listening : Connected);
   sendConnectedClientsIpc();
+  sendClientMonitorsIpc();
 
   delete client;
 }
@@ -1624,6 +1715,15 @@ bool Server::onMouseMovePrimary(int32_t x, int32_t y)
   m_active->getShape(ax, ay, aw, ah);
   int32_t zoneSize = getJumpZoneSize(m_active);
 
+  // find the monitor the cursor is on.  we test switch edges against this
+  // monitor (not just the outer bounding box) so the cursor can also leave
+  // from an internal edge that borders a multi-monitor dead zone, e.g. an
+  // L-shaped desktop.
+  std::vector<MonitorInfo> monitors;
+  m_active->getMonitors(monitors);
+  const int mi = findMonitor(monitors, x, y);
+  const MonitorInfo &mon = monitors[static_cast<size_t>(mi)];
+
   // clamp position to screen
   int32_t xc = x;
   int32_t yc = y;
@@ -1640,23 +1740,27 @@ bool Server::onMouseMovePrimary(int32_t x, int32_t y)
 
   // see if we should change screens
   // when the cursor is in a corner, there may be a screen either
-  // horizontally or vertically.  check both directions.
+  // horizontally or vertically.  check both directions.  test against the
+  // current monitor's edges, but only treat an edge as a switch candidate
+  // when it is "exposed" -- i.e. no monitor of this machine lies immediately
+  // beyond it (otherwise the OS just carries the cursor onto the adjacent
+  // monitor and we must not switch screens).
   using enum Direction;
   auto dirh = NoDirection;
   auto dirv = NoDirection;
   int32_t xh = x;
   int32_t yv = y;
-  if (x < ax + zoneSize) {
+  if (x < mon.x + zoneSize && !hasSameMachineNeighbor(monitors, mi, Left, y)) {
     xh -= zoneSize;
     dirh = Left;
-  } else if (x >= ax + aw - zoneSize) {
+  } else if (x >= mon.x + mon.w - zoneSize && !hasSameMachineNeighbor(monitors, mi, Right, y)) {
     xh += zoneSize;
     dirh = Right;
   }
-  if (y < ay + zoneSize) {
+  if (y < mon.y + zoneSize && !hasSameMachineNeighbor(monitors, mi, Top, x)) {
     yv -= zoneSize;
     dirv = Top;
-  } else if (y >= ay + ah - zoneSize) {
+  } else if (y >= mon.y + mon.h - zoneSize && !hasSameMachineNeighbor(monitors, mi, Bottom, x)) {
     yv += zoneSize;
     dirv = Bottom;
   }
@@ -1743,18 +1847,22 @@ void Server::onMouseMoveSecondary(int32_t dx, int32_t dy)
   m_x += dx;
   m_y += dy;
 
-  // get screen shape
+  // get screen shape (bounding box) and per-monitor layout
   int32_t ax;
   int32_t ay;
   int32_t aw;
   int32_t ah;
   m_active->getShape(ax, ay, aw, ah);
 
+  std::vector<MonitorInfo> monitors;
+  m_active->getMonitors(monitors);
+  const int prev = findMonitor(monitors, xOld, yOld);
+
   // find direction of neighbor and get the neighbor
   bool jump = true;
   BaseClientProxy *newScreen;
   do {
-    // clamp position to screen
+    // clamp position to screen for switch/lock bookkeeping
     int32_t xc = m_x;
     int32_t yc = m_y;
     if (xc < ax) {
@@ -1768,17 +1876,37 @@ void Server::onMouseMoveSecondary(int32_t dx, int32_t dy)
       yc = ay + ah - 1;
     }
 
-    Direction dir;
     using enum Direction;
-    if (m_x < ax) {
-      dir = Left;
-    } else if (m_x > ax + aw - 1) {
-      dir = Right;
-    } else if (m_y < ay) {
-      dir = Top;
-    } else if (m_y > ay + ah - 1) {
-      dir = Bottom;
-    } else {
+
+    // if the cursor is still inside any monitor of this machine then we
+    // haven't left -- this also lets it move freely between the machine's
+    // own monitors.  otherwise work out which edge of the monitor it came
+    // from it crossed.
+    const int cur = monitorContaining(monitors, m_x, m_y);
+    Direction dir = NoDirection;
+    if (cur < 0) {
+      const MonitorInfo &pm = monitors[static_cast<size_t>(prev)];
+      if (m_x < pm.x) {
+        dir = Left;
+      } else if (m_x > pm.x + pm.w - 1) {
+        dir = Right;
+      } else if (m_y < pm.y) {
+        dir = Top;
+      } else if (m_y > pm.y + pm.h - 1) {
+        dir = Bottom;
+      }
+
+      // don't switch across an internal edge that borders another monitor of
+      // the same machine (e.g. a gap between the machine's own monitors)
+      if (dir != NoDirection) {
+        const int32_t perp = (dir == Left || dir == Right) ? m_y : m_x;
+        if (hasSameMachineNeighbor(monitors, prev, dir, perp)) {
+          dir = NoDirection;
+        }
+      }
+    }
+
+    if (dir == NoDirection) {
       // we haven't left the screen
       newScreen = m_active;
       jump = false;
@@ -1837,21 +1965,24 @@ void Server::onMouseMoveSecondary(int32_t dx, int32_t dy)
     // switch screens
     switchScreen(newScreen, newX, newY, false);
   } else {
-    // same screen.  clamp mouse to edge.
+    // same screen.  clamp mouse so it stays on a real monitor (never in a
+    // multi-monitor dead zone).
     m_x = xOld + dx;
     m_y = yOld + dy;
-    if (m_x < ax) {
-      m_x = ax;
+    const int ci = monitorContaining(monitors, m_x, m_y);
+    const MonitorInfo &cm = monitors[static_cast<size_t>(ci >= 0 ? ci : prev)];
+    if (m_x < cm.x) {
+      m_x = cm.x;
       LOG_VERBOSE("clamp to left of \"%s\"", getName(m_active).c_str());
-    } else if (m_x > ax + aw - 1) {
-      m_x = ax + aw - 1;
+    } else if (m_x > cm.x + cm.w - 1) {
+      m_x = cm.x + cm.w - 1;
       LOG_VERBOSE("clamp to right of \"%s\"", getName(m_active).c_str());
     }
-    if (m_y < ay) {
-      m_y = ay;
+    if (m_y < cm.y) {
+      m_y = cm.y;
       LOG_VERBOSE("clamp to top of \"%s\"", getName(m_active).c_str());
-    } else if (m_y > ay + ah - 1) {
-      m_y = ay + ah - 1;
+    } else if (m_y > cm.y + cm.h - 1) {
+      m_y = cm.y + cm.h - 1;
       LOG_VERBOSE("clamp to bottom of \"%s\"", getName(m_active).c_str());
     }
 

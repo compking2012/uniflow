@@ -15,6 +15,8 @@
 #include <QIcon>
 #include <QList>
 #include <QPixmap>
+#include <QPoint>
+#include <QRect>
 #include <QString>
 #include <QStringList>
 
@@ -25,8 +27,6 @@ class ScreenSettingsDialog;
 class Screen : public ScreenConfig
 {
   friend class ScreenSettingsDialog;
-  friend class ScreenSetupModel;
-  friend class ScreenSetupView;
 
   friend QDataStream &operator<<(QDataStream &outStream, const Screen &screen)
   {
@@ -112,6 +112,40 @@ public:
     m_isServer = true;
   }
 
+  //! Position of this machine's monitor group in the shared canvas
+  //! coordinate space, as arranged by the server administrator.  Persisted.
+  [[nodiscard]] QPoint canvasPos() const
+  {
+    return m_CanvasPos;
+  }
+  void setCanvasPos(const QPoint &pos)
+  {
+    m_CanvasPos = pos;
+    m_HasCanvasPos = true;
+  }
+  //! false until a canvas position has been assigned (manually, or by
+  //! migrating an older grid-based config).  Lets callers distinguish
+  //! "never placed" from "placed at the origin".
+  [[nodiscard]] bool hasCanvasPos() const
+  {
+    return m_HasCanvasPos;
+  }
+
+  //! This machine's individual monitors, in the machine's own local
+  //! coordinates (top-left of the bounding box normalised to 0,0).  This is
+  //! always a live snapshot of the machine's real, OS-reported display
+  //! layout (or a single placeholder monitor before any data is known) --
+  //! it is never user-edited and is not persisted.
+  [[nodiscard]] const QList<QRect> &monitors() const
+  {
+    return m_Monitors;
+  }
+  //! Sets this machine's monitors from raw OS/IPC-reported rects, which are
+  //! typically in that machine's own virtual-desktop coordinates (not
+  //! zero-based).  Normalises them so the bounding box's top-left is at the
+  //! origin, matching monitors()'s documented invariant.
+  void setMonitors(const QList<QRect> &monitors);
+
   bool operator==(const Screen &screen) const;
 
 protected:
@@ -166,4 +200,7 @@ private:
   QList<bool> m_Fixes{false, false, false, false};
   bool m_Swapped = false;
   bool m_isServer = false;
+  QPoint m_CanvasPos;
+  bool m_HasCanvasPos = false;
+  QList<QRect> m_Monitors;
 };

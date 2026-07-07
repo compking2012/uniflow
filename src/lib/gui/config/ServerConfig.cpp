@@ -18,22 +18,7 @@ using enum ScreenConfig::Modifier;
 using enum ScreenConfig::SwitchCorner;
 using enum ScreenConfig::Fix;
 
-static const struct
-{
-  int x;
-  int y;
-  const char *name;
-} neighbourDirs[] = {
-    {1, 0, "right"},
-    {-1, 0, "left"},
-    {0, -1, "up"},
-    {0, 1, "down"},
-
-};
-
-const int serverDefaultIndex = 7;
-
-ServerConfig::ServerConfig(int columns, int rows) : m_Screens(columns), m_columns(columns), m_rows(rows)
+ServerConfig::ServerConfig()
 {
   recall();
 }
@@ -66,11 +51,6 @@ void ServerConfig::setupScreens()
 {
   screens().clear();
   hotkeys().clear();
-
-  // There must always be screen objects for each cell in the screens QList.
-  // Unused screens are identified by having an empty name.
-  for (int i = 0; i < m_columns * m_rows; i++)
-    addScreen(Screen());
 }
 
 void ServerConfig::commit()
@@ -108,21 +88,32 @@ void ServerConfig::recall()
 
   settings().beginGroup("internalConfig");
 
-  m_columns = Settings::value(Settings::Server::GridWidth).toInt();
-  m_rows = Settings::value(Settings::Server::GridHeight).toInt();
+  // only used to migrate a screen that predates per-monitor canvas
+  // positions: an old grid-based config placed screens at array index
+  // i = row * oldWidth + column.
+  const int oldWidth = Settings::value(Settings::Server::GridWidth).toInt();
 
-  // we need to know the number of columns and rows before we can set up
-  // ourselves
   setupScreens();
 
-  int numScreens = settings().beginReadArray("screens");
-  Q_ASSERT(numScreens <= screens().size());
-  for (int i = 0; i < numScreens; i++) {
+  int numEntries = settings().beginReadArray("screens");
+  for (int i = 0; i < numEntries; i++) {
     settings().setArrayIndex(i);
-    screens()[i].loadSettings(settings());
-    if (getServerName() == screens()[i].name()) {
-      screens()[i].markAsServer();
+    Screen s;
+    s.loadSettings(settings());
+    if (s.isNull()) {
+      // empty grid cell from an older, grid-based config; the flat list has
+      // no equivalent placeholder
+      continue;
     }
+    if (getServerName() == s.name()) {
+      s.markAsServer();
+    }
+    if (!s.hasCanvasPos()) {
+      const int col = oldWidth > 0 ? i % oldWidth : i;
+      const int row = oldWidth > 0 ? i / oldWidth : 0;
+      s.setCanvasPos(QPoint(col * 2000, row * 1200));
+    }
+    screens().append(s);
   }
   settings().endArray();
 
@@ -138,24 +129,6 @@ void ServerConfig::recall()
   settings().endGroup();
 }
 
-int ServerConfig::adjacentScreenIndex(int idx, int deltaColumn, int deltaRow) const
-{
-  if (screens()[idx].isNull())
-    return -1;
-
-  // if we're at the left or right end of the table, don't find results going
-  // further left or right
-  if ((deltaColumn > 0 && (idx + 1) % m_columns == 0) || (deltaColumn < 0 && idx % m_columns == 0))
-    return -1;
-
-  int arrayPos = idx + deltaColumn + deltaRow * m_columns;
-
-  if (arrayPos >= screens().size() || arrayPos < 0)
-    return -1;
-
-  return arrayPos;
-}
-
 QTextStream &operator<<(QTextStream &outStream, const ServerConfig &config)
 {
   outStream << "section: screens" << Qt::endl;
@@ -169,16 +142,31 @@ QTextStream &operator<<(QTextStream &outStream, const ServerConfig &config)
 
   outStream << "section: links" << Qt::endl;
 
-  for (int i = 0; const auto &screen : config.screens()) {
-    if (!screen.isNull()) {
-      outStream << "\t" << screen.name() << ":\n";
-      for (const auto &neighbour : std::as_const(neighbourDirs)) {
-        int idx = config.adjacentScreenIndex(i, neighbour.x, neighbour.y);
-        if (idx != -1 && !config.screens()[idx].isNull())
-          outStream << "\t\t" << neighbour.name << " = " << config.screens()[idx].name() << Qt::endl;
-      }
+  // links are always derived from the canvas arrangement: every screen's
+  // monitors, translated to its chosen canvas position.
+  QMap<QString, QList<QRect>> layout;
+  for (const Screen &s : config.screens()) {
+    if (s.isNull())
+      continue;
+    QList<QRect> translated;
+    for (const QRect &r : s.monitors())
+      translated.append(r.translated(s.canvasPos()));
+    if (translated.isEmpty())
+      translated.append(QRect(s.canvasPos(), QSize(1920, 1080)));
+    layout.insert(s.name(), translated);
+  }
+
+  QString currentScreen;
+  for (const auto &link : deskflow::gui::generateMonitorLinks(layout)) {
+    if (link.srcMachine != currentScreen) {
+      currentScreen = link.srcMachine;
+      outStream << "\t" << currentScreen << ":\n";
     }
-    i++;
+    const auto interval = [](double a, double b) {
+      return QStringLiteral("(%1,%2)").arg(qRound(a)).arg(qRound(b));
+    };
+    outStream << "\t\t" << link.side << interval(link.srcStart, link.srcEnd) << " = " << link.dstMachine
+              << interval(link.dstStart, link.dstEnd) << Qt::endl;
   }
 
   outStream << "end" << Qt::endl << Qt::endl;
@@ -230,20 +218,6 @@ bool ServerConfig::useExternalConfig() const
   return Settings::value(Settings::Server::ExternalConfig).toBool();
 }
 
-bool ServerConfig::isFull() const
-{
-  bool isFull = true;
-
-  for (const auto &screen : screens()) {
-    if (screen.isNull()) {
-      isFull = false;
-      break;
-    }
-  }
-
-  return isFull;
-}
-
 bool ServerConfig::screenExists(const QString &screenName) const
 {
   bool isExists = false;
@@ -266,10 +240,12 @@ void ServerConfig::addClient(const QString &clientName)
   if (findScreenName(screenName, serverIndex)) {
     m_Screens[serverIndex].markAsServer();
   } else {
-    fixNoServer(screenName, serverIndex);
+    Screen serverScreen(screenName);
+    serverScreen.markAsServer();
+    m_Screens.addScreen(serverScreen);
   }
 
-  m_Screens.addScreenByPriority(Screen(clientName));
+  m_Screens.addScreen(Screen(clientName));
 }
 
 void ServerConfig::setConfigFile(const QString &configFile) const
@@ -293,19 +269,6 @@ bool ServerConfig::findScreenName(const QString &name, int &index)
     }
   }
   return found;
-}
-
-bool ServerConfig::fixNoServer(const QString &name, int &index)
-{
-  bool fixed = false;
-  if (screens()[serverDefaultIndex].isNull()) {
-    m_Screens[serverDefaultIndex].setName(name);
-    m_Screens[serverDefaultIndex].markAsServer();
-    index = serverDefaultIndex;
-    fixed = true;
-  }
-
-  return fixed;
 }
 
 QSettingsProxy &ServerConfig::settings()

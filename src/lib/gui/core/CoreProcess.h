@@ -15,6 +15,7 @@
 #include <QMutex>
 #include <QObject>
 #include <QProcess>
+#include <QRect>
 #include <QTimer>
 
 namespace deskflow::gui {
@@ -88,6 +89,7 @@ Q_SIGNALS:
   void secureSocket(bool enabled);
   void daemonIpcClientConnectionFailed();
   void connectedClientsChanged(const QStringList &clients);
+  void clientMonitorsChanged(const QMap<QString, QList<QRect>> &monitors);
   void securityLevelChanged(QString securityLevel);
   void unrecognisedClient(const QString &clientName);
   void connectionRefused(deskflow::core::ConnectionRefusal reason);

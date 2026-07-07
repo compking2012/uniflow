@@ -10,7 +10,24 @@
 
 #include "deskflow/ClipboardTypes.h"
 
+#include <cstdint>
+#include <vector>
+
 class IClipboard;
+
+//! Individual monitor geometry
+/*!
+Position of the upper-left corner and size of a single physical monitor
+in the virtual desktop coordinate system.  A screen (one machine) may be
+made up of several of these.
+*/
+struct MonitorInfo
+{
+  int32_t x = 0;
+  int32_t y = 0;
+  int32_t w = 0;
+  int32_t h = 0;
+};
 
 //! Screen interface
 /*!
@@ -49,6 +66,25 @@ public:
   \c y and the size of the screen in \c width and \c height.
   */
   virtual void getShape(int32_t &x, int32_t &y, int32_t &width, int32_t &height) const = 0;
+
+  //! Get individual monitor geometry
+  /*!
+  Return the list of individual physical monitors that make up this screen,
+  each in virtual desktop coordinates.  The default implementation returns a
+  single entry equal to getShape() (the union bounding box), which preserves
+  the legacy single-rectangle behavior for callers and peers that don't
+  provide per-monitor information.
+  */
+  virtual void getMonitors(std::vector<MonitorInfo> &monitors) const
+  {
+    int32_t x;
+    int32_t y;
+    int32_t w;
+    int32_t h;
+    getShape(x, y, w, h);
+    monitors.clear();
+    monitors.push_back(MonitorInfo{x, y, w, h});
+  }
 
   //! Get cursor position
   /*!

@@ -199,6 +199,11 @@ void Client::getShape(int32_t &x, int32_t &y, int32_t &w, int32_t &h) const
   m_screen->getShape(x, y, w, h);
 }
 
+void Client::getMonitors(std::vector<MonitorInfo> &monitors) const
+{
+  m_screen->getMonitors(monitors);
+}
+
 void Client::getCursorPos(int32_t &x, int32_t &y) const
 {
   m_screen->getCursorPos(x, y);
@@ -649,6 +654,10 @@ void Client::handleHello()
         kProtocolMajorVersion, kProtocolMinorVersion, kProtocolMajorVersion, helloBackMinor
     );
   }
+
+  // remember the negotiated protocol version so we only send messages the
+  // server understands (e.g. the per-monitor layout added in 1.9)
+  m_protocolMinor = helloBackMinor;
 
   LOG_DEBUG("saying hello back with version %s %d.%d", protocolName.c_str(), kProtocolMajorVersion, helloBackMinor);
 

@@ -134,6 +134,7 @@ public:
   void *getEventTarget() const final;
   bool getClipboard(ClipboardID id, IClipboard *) const override;
   void getShape(int32_t &x, int32_t &y, int32_t &width, int32_t &height) const override;
+  void getMonitors(std::vector<MonitorInfo> &monitors) const override;
   void getCursorPos(int32_t &x, int32_t &y) const override;
 
   // IClient overrides
@@ -154,6 +155,17 @@ public:
   void resetOptions() override;
   void setOptions(const OptionsList &options) override;
   std::string getName() const override;
+
+  //! Get negotiated protocol minor version
+  /*!
+  Returns the minor protocol version negotiated with the server (major is
+  always kProtocolMajorVersion).  Zero until the hello handshake completes.
+  Used to gate messages that only newer servers understand.
+  */
+  int getProtocolMinor() const
+  {
+    return m_protocolMinor;
+  }
 
 private:
   void saveRelativeRestorePosition();
@@ -191,6 +203,7 @@ private:
   deskflow::IStream *m_stream = nullptr;
   EventQueueTimer *m_timer = nullptr;
   ServerProxy *m_server = nullptr;
+  int m_protocolMinor = 0;
   bool m_ready = false;
   bool m_active = false;
   bool m_suspended = false;

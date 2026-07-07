@@ -16,29 +16,26 @@
 #include "dialogs/ActionDialog.h"
 #include "dialogs/HotkeyDialog.h"
 #include "dialogs/ScreenSettingsDialog.h"
+#include "widgets/MonitorLayoutView.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QPushButton>
 
 using enum ScreenConfig::SwitchCorner;
 
 ServerConfigDialog::ServerConfigDialog(QWidget *parent, ServerConfig &config)
     : QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
       ui{std::make_unique<Ui::ServerConfigDialog>()},
-      m_columns{Settings::value(Settings::Server::GridWidth).toInt()},
-      m_rows{Settings::value(Settings::Server::GridHeight).toInt()},
       m_originalServerConfig(config),
       m_originalServerConfigIsExternal(config.useExternalConfig()),
       m_originalServerConfigUsesExternalFile(config.configFile()),
-      m_serverConfig(config),
-      m_screenSetupModel(m_serverConfig.screens(), m_columns, m_rows)
+      m_serverConfig(config)
 {
   ui->setupUi(this);
 
   loadFromConfig();
 
-  ui->lblRemoveScreen->setPixmap(QIcon::fromTheme("user-trash").pixmap(QSize(64, 64)));
-  ui->lblNewScreen->setEnabled(!model().isFull());
   ui->lblNewScreen->setPixmap(QIcon::fromTheme("video-display").pixmap(QSize(64, 64)));
   ui->btnBrowseConfigFile->setIcon(QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen));
 
@@ -48,6 +45,7 @@ ServerConfigDialog::ServerConfigDialog(QWidget *parent, ServerConfig &config)
 
   if (!deskflow::platform::isWindows())
     ui->cbWin32KeepForeground->setVisible(false);
+
   initConnections();
   onChange();
 }
@@ -90,8 +88,7 @@ void ServerConfigDialog::accept()
   Settings::setValue(Settings::Server::Win32KeepForeground, m_win32keepForeground);
 
   QStringList screenNames;
-  const auto screenList = m_screenSetupModel.m_Screens;
-  for (const auto &screen : screenList) {
+  for (const auto &screen : serverConfig().screens()) {
     const auto &screenName = screen.name();
     if (screenName.isEmpty())
       continue;
@@ -346,10 +343,11 @@ void ServerConfigDialog::addClient()
   addComputer("", false);
 }
 
-void ServerConfigDialog::onScreenRemoved()
+void ServerConfigDialog::setMonitorLayouts(const QMap<QString, QList<QRect>> &layouts)
 {
-  ui->lblNewScreen->setEnabled(true);
-  onChange();
+  for (auto it = layouts.constBegin(); it != layouts.constEnd(); ++it) {
+    ui->screenSetupView->refreshMonitors(it.key(), it.value());
+  }
 }
 
 void ServerConfigDialog::toggleExternalConfig(bool checked)
@@ -437,8 +435,6 @@ void ServerConfigDialog::loadFromConfig()
   for (const Hotkey &hotkey : std::as_const(serverConfig().hotkeys()))
     ui->listHotkeys->addItem(hotkey.text());
 
-  ui->screenSetupView->setModel(&m_screenSetupModel);
-
   auto &screens = serverConfig().screens();
   auto server = std::ranges::find_if(screens, [this](const Screen &screen) {
     return (screen.name() == serverConfig().getServerName());
@@ -447,17 +443,18 @@ void ServerConfigDialog::loadFromConfig()
   if (server == screens.end()) {
     Screen serverScreen(serverConfig().getServerName());
     serverScreen.markAsServer();
-    model().screen(m_columns / 2, m_rows / 2) = serverScreen;
+    serverConfig().addScreen(serverScreen);
   } else {
     server->markAsServer();
   }
+
+  ui->screenSetupView->setScreenList(&serverConfig().screens());
 }
 
 void ServerConfigDialog::initConnections() const
 {
   connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ServerConfigDialog::accept);
   connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &ServerConfigDialog::reject);
-  connect(ui->lblRemoveScreen, &TrashScreenWidget::screenRemoved, this, &ServerConfigDialog::onScreenRemoved);
   connect(ui->btnNewHotkey, &QPushButton::clicked, this, &ServerConfigDialog::addHotkey);
   connect(ui->btnEditHotkey, &QPushButton::clicked, this, &ServerConfigDialog::editHotkey);
   connect(ui->btnRemoveHotkey, &QPushButton::clicked, this, &ServerConfigDialog::removeHotkey);
@@ -500,7 +497,7 @@ void ServerConfigDialog::initConnections() const
       ui->cbDefaultLockToComputerState, &QCheckBox::toggled, this, &ServerConfigDialog::toggleDefaultLockToComputerState
   );
   connect(ui->cbDisableLockToComputer, &QCheckBox::toggled, this, &ServerConfigDialog::toggleLockToComputer);
-  connect(&m_screenSetupModel, &ScreenSetupModel::screensChanged, this, &ServerConfigDialog::onChange);
+  connect(ui->screenSetupView, &deskflow::gui::MonitorLayoutView::screensChanged, this, &ServerConfigDialog::onChange);
 }
 
 bool ServerConfigDialog::addComputer(const QString &clientName, bool doSilent)
@@ -508,12 +505,13 @@ bool ServerConfigDialog::addComputer(const QString &clientName, bool doSilent)
   bool isAccepted = false;
   Screen newScreen(clientName);
 
-  if (ScreenSettingsDialog dlg(this, &newScreen, &model().m_Screens); doSilent || dlg.exec() == QDialog::Accepted) {
-    model().addScreen(newScreen);
+  if (ScreenSettingsDialog dlg(this, &newScreen, &serverConfig().screens());
+      doSilent || dlg.exec() == QDialog::Accepted) {
+    serverConfig().addScreen(newScreen);
+    ui->screenSetupView->rebuild();
     isAccepted = true;
   }
 
-  ui->lblNewScreen->setEnabled(!model().isFull());
   return isAccepted;
 }
 

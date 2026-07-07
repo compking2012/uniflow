@@ -908,7 +908,7 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
     <name>ScreenSetupModel</name>
     <message>
         <source>&lt;center&gt;Screen: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;Double click to edit settings&lt;br&gt;Drag screen to the trashcan to remove it</source>
-        <translation>&lt;center&gt;Schermo: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;Fai doppio clic per modificare le impostazioni&lt;br&gt;Trascina lo schermo nel cestino per rimuoverlo</translation>
+        <translation type="vanished">&lt;center&gt;Schermo: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;Fai doppio clic per modificare le impostazioni&lt;br&gt;Trascina lo schermo nel cestino per rimuoverlo</translation>
     </message>
 </context>
 <context>
@@ -942,15 +942,15 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
     </message>
     <message>
         <source>Drag a computer from the grid to the trashcan to remove it.</source>
-        <translation>Trascina un computer dalla griglia nel cestino per rimuoverlo.</translation>
+        <translation type="vanished">Trascina un computer dalla griglia nel cestino per rimuoverlo.</translation>
     </message>
     <message>
         <source>Configure the layout of your computer displays by dragging to where you want.</source>
-        <translation>Configura il layout degli schermi dei tuoi computer trascinandoli dove desideri.</translation>
+        <translation type="vanished">Configura il layout degli schermi dei tuoi computer trascinandoli dove desideri.</translation>
     </message>
     <message>
         <source>Drag to the grid to add a new computer.</source>
-        <translation>Trascina nella griglia per aggiungere un nuovo computer.</translation>
+        <translation type="vanished">Trascina nella griglia per aggiungere un nuovo computer.</translation>
     </message>
     <message>
         <source>Hotkeys</source>
@@ -1081,6 +1081,18 @@ Enabling this setting will disable the server config GUI.</source>
 L&apos;abilitazione di questa impostazione disabiliterà l&apos;interfaccia grafica di configurazione del server.</translation>
     </message>
     <message>
+        <source>Monitor Layout...</source>
+        <translation type="obsolete">Disposizione monitor…</translation>
+    </message>
+    <message>
+        <source>Monitor Layout</source>
+        <translation type="obsolete">Disposizione monitor</translation>
+    </message>
+    <message>
+        <source>Add at least two screens before arranging their monitors.</source>
+        <translation type="obsolete">Aggiungi almeno due schermi prima di disporre i relativi monitor.</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation>%1 Configurazioni (*.conf);;Tutti i file (*.*)</translation>
@@ -1092,6 +1104,14 @@ L&apos;abilitazione di questa impostazione disabiliterà l&apos;interfaccia graf
     <message>
         <source>Enable lock to computer at startup</source>
         <translation type="unfinished">Abilita il blocco al computer all&apos;avvio</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1364,6 +1384,28 @@ L&apos;abilitazione di questa impostazione disabiliterà l&apos;interfaccia graf
     <message>
         <source>Encryption Disabled</source>
         <translation>Crittografia disabilitata</translation>
+    </message>
+</context>
+<context>
+    <name>deskflow::gui::MonitorLayoutDialog</name>
+    <message>
+        <source>Monitor Layout</source>
+        <translation type="obsolete">Disposizione monitor</translation>
+    </message>
+    <message>
+        <source>Drag each machine&apos;s monitors so they sit where they physically are relative to the other machines. Touching edges become direct cursor crossings.</source>
+        <translation type="obsolete">Trascina i monitor di ciascun computer in modo che si trovino nella posizione fisica reale rispetto agli altri computer. I bordi a contatto diventano punti di passaggio diretto del cursore.</translation>
+    </message>
+    <message>
+        <source>Reset Arrangement</source>
+        <translation type="obsolete">Ripristina disposizione</translation>
+    </message>
+</context>
+<context>
+    <name>deskflow::gui::MonitorLayoutView</name>
+    <message>
+        <source>Remove Computer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

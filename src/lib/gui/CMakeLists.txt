@@ -32,8 +32,6 @@ add_library(${target} STATIC
   MainWindow.ui
   Messages.cpp
   Messages.h
-  ScreenSetupModel.cpp
-  ScreenSetupModel.h
   StyleUtils.h
   TlsUtility.cpp
   TlsUtility.h
@@ -108,16 +106,14 @@ add_library(${target} STATIC
   widgets/LogDock.h
   widgets/LogWidget.h
   widgets/LogWidget.cpp
+  widgets/MonitorLayoutView.cpp
+  widgets/MonitorLayoutView.h
   widgets/NewScreenWidget.cpp
   widgets/NewScreenWidget.h
-  widgets/ScreenSetupView.cpp
-  widgets/ScreenSetupView.h
   widgets/SearchWidget.h
   widgets/SearchWidget.cpp
   widgets/StatusBar.cpp
   widgets/StatusBar.h
-  widgets/TrashScreenWidget.cpp
-  widgets/TrashScreenWidget.h
 )
 
 target_link_libraries(

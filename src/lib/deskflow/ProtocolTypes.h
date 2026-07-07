@@ -45,7 +45,7 @@ static const int16_t kProtocolMajorVersion = 1;
  * @note When incrementing the minor version, the Deskflow application version should also increment
  * @since Protocol version 1.0
  */
-static const int16_t kProtocolMinorVersion = 8;
+static const int16_t kProtocolMinorVersion = 9;
 
 /**
  * @brief Default TCP port for Deskflow connections
@@ -955,6 +955,32 @@ extern const char *const kMsgDClipboard;
  * @since Protocol version 1.0
  */
 extern const char *const kMsgDInfo;
+
+/**
+ * @brief Client individual monitor information
+ *
+ * **Message Code**: `"DIMN"`
+ * **Direction**: Secondary → Primary
+ * **Format**: `"DIMN%4I"`
+ * **Parameters**:
+ * - `$1`: Flat list of 32-bit integers, four per monitor:
+ *   `[x0, y0, w0, h0, x1, y1, w1, h1, ...]` giving the position and size
+ *   of each individual physical monitor in the virtual desktop coordinate
+ *   system.  Signed values are transmitted as their 32-bit two's-complement
+ *   representation.
+ *
+ * Sent immediately after kMsgDInfo (same triggers) by clients that speak
+ * protocol version 1.9 or later and have more than one monitor.  Lets the
+ * server route the cursor between individual physically-adjacent monitors of
+ * different machines rather than only between whole-machine bounding boxes.
+ *
+ * Peers that never send this message (older clients, single-monitor clients)
+ * are treated as a single monitor equal to their kMsgDInfo bounding box.
+ *
+ * @see kMsgDInfo
+ * @since Protocol version 1.9
+ */
+extern const char *const kMsgDInfoMonitors;
 
 /**
  * @brief Set client options

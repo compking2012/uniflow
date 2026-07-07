@@ -908,7 +908,7 @@ Además, verifique que puede %1 el archivo de configuración del servidor: %2</t
     <name>ScreenSetupModel</name>
     <message>
         <source>&lt;center&gt;Screen: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;Double click to edit settings&lt;br&gt;Drag screen to the trashcan to remove it</source>
-        <translation type="unfinished">&lt;center&gt;Pantalla: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;Haga doble clic para editar la configuración&lt;br&gt;Arrastre la pantalla a la papelera para eliminarla</translation>
+        <translation type="obsolete">&lt;center&gt;Pantalla: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;Haga doble clic para editar la configuración&lt;br&gt;Arrastre la pantalla a la papelera para eliminarla</translation>
     </message>
 </context>
 <context>
@@ -942,15 +942,15 @@ Además, verifique que puede %1 el archivo de configuración del servidor: %2</t
     </message>
     <message>
         <source>Drag a computer from the grid to the trashcan to remove it.</source>
-        <translation type="unfinished">Arrastre una computadora desde la cuadrícula a la papelera para eliminarla.</translation>
+        <translation type="obsolete">Arrastre una computadora desde la cuadrícula a la papelera para eliminarla.</translation>
     </message>
     <message>
         <source>Configure the layout of your computer displays by dragging to where you want.</source>
-        <translation type="unfinished">Configura el diseño de las pantallas de tu computadora arrastrándolas hacia donde quieras.</translation>
+        <translation type="obsolete">Configura el diseño de las pantallas de tu computadora arrastrándolas hacia donde quieras.</translation>
     </message>
     <message>
         <source>Drag to the grid to add a new computer.</source>
-        <translation type="unfinished">Arrastre a la cuadrícula para agregar una nueva computadora.</translation>
+        <translation type="obsolete">Arrastre a la cuadrícula para agregar una nueva computadora.</translation>
     </message>
     <message>
         <source>Hotkeys</source>
@@ -1081,6 +1081,18 @@ Al habilitar esta opción, se deshabilitará la interfaz gráfica de usuario (GU
         <translation type="unfinished">Ruta del archivo de configuración</translation>
     </message>
     <message>
+        <source>Monitor Layout...</source>
+        <translation type="obsolete">Diseño de monitores…</translation>
+    </message>
+    <message>
+        <source>Monitor Layout</source>
+        <translation type="obsolete">Diseño de monitores</translation>
+    </message>
+    <message>
+        <source>Add at least two screens before arranging their monitors.</source>
+        <translation type="obsolete">Agrega al menos dos pantallas antes de organizar sus monitores.</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation type="unfinished">%1 Configuraciones (*.conf);;Todos los archivos (*.*)</translation>
@@ -1092,6 +1104,14 @@ Al habilitar esta opción, se deshabilitará la interfaz gráfica de usuario (GU
     <message>
         <source>Enable lock to computer at startup</source>
         <translation type="unfinished">Activar el bloqueo del ordenador al iniciar</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1364,6 +1384,28 @@ Al habilitar esta opción, se deshabilitará la interfaz gráfica de usuario (GU
     <message>
         <source>Encryption Disabled</source>
         <translation type="unfinished">Cifrado deshabilitado</translation>
+    </message>
+</context>
+<context>
+    <name>deskflow::gui::MonitorLayoutDialog</name>
+    <message>
+        <source>Monitor Layout</source>
+        <translation type="obsolete">Diseño de monitores</translation>
+    </message>
+    <message>
+        <source>Drag each machine&apos;s monitors so they sit where they physically are relative to the other machines. Touching edges become direct cursor crossings.</source>
+        <translation type="obsolete">Arrastra los monitores de cada computadora para colocarlos en la posición física real respecto a las demás computadoras. Los bordes que se tocan se convierten en cruces directos del cursor.</translation>
+    </message>
+    <message>
+        <source>Reset Arrangement</source>
+        <translation type="obsolete">Restablecer disposición</translation>
+    </message>
+</context>
+<context>
+    <name>deskflow::gui::MonitorLayoutView</name>
+    <message>
+        <source>Remove Computer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

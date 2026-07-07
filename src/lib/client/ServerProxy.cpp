@@ -819,6 +819,37 @@ void ServerProxy::queryInfo()
   m_client->getShape(info.m_x, info.m_y, info.m_w, info.m_h);
   m_client->getCursorPos(info.m_mx, info.m_my);
   sendInfo(info);
+  sendInfoMonitors();
+}
+
+void ServerProxy::sendInfoMonitors()
+{
+  // the per-monitor layout was added in protocol 1.9; only send it to a
+  // server that understands it, and only when there is more than one
+  // monitor (a single monitor is fully described by the kMsgDInfo box)
+  if (m_client->getProtocolMinor() < 9) {
+    return;
+  }
+
+  std::vector<MonitorInfo> monitors;
+  m_client->getMonitors(monitors);
+  if (monitors.size() < 2) {
+    return;
+  }
+
+  // flatten to [x0, y0, w0, h0, x1, ...] as 32-bit ints (signed values
+  // are transmitted as their two's-complement representation)
+  std::vector<uint32_t> data;
+  data.reserve(monitors.size() * 4);
+  for (const MonitorInfo &m : monitors) {
+    data.push_back(static_cast<uint32_t>(m.x));
+    data.push_back(static_cast<uint32_t>(m.y));
+    data.push_back(static_cast<uint32_t>(m.w));
+    data.push_back(static_cast<uint32_t>(m.h));
+  }
+
+  LOG_VERBOSE("sending monitor layout: %d monitor(s)", (int)monitors.size());
+  ProtocolUtil::writef(m_stream, kMsgDInfoMonitors, &data);
 }
 
 void ServerProxy::infoAcknowledgment()

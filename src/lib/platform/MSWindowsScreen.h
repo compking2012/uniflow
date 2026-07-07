@@ -58,6 +58,7 @@ public:
   void *getEventTarget() const override;
   bool getClipboard(ClipboardID id, IClipboard *) const override;
   void getShape(int32_t &x, int32_t &y, int32_t &width, int32_t &height) const override;
+  void getMonitors(std::vector<MonitorInfo> &monitors) const override;
   void getCursorPos(int32_t &x, int32_t &y) const override;
 
   /**
@@ -220,6 +221,10 @@ private: // HACK
   // our window proc
   static LRESULT CALLBACK wndProc(HWND, UINT, WPARAM, LPARAM);
 
+  // monitor enumeration callback, appends each monitor rect to the
+  // std::vector<MonitorInfo> passed via data
+  static BOOL CALLBACK monitorEnumProc(HMONITOR, HDC, LPRECT rect, LPARAM data);
+
   // save last position of mouse to compute next delta movement
   void saveMousePosition(int32_t x, int32_t y);
 
@@ -269,6 +274,9 @@ private:
   int32_t m_h = 0;
   int32_t m_xCenter = 0;
   int32_t m_yCenter = 0;
+
+  // geometry of each individual monitor making up this screen
+  std::vector<MonitorInfo> m_monitors;
 
   // true if system appears to have multiple monitors
   bool m_multimon = false;

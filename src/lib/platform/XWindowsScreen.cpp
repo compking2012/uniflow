@@ -460,6 +460,15 @@ void XWindowsScreen::getShape(int32_t &x, int32_t &y, int32_t &w, int32_t &h) co
   h = m_h;
 }
 
+void XWindowsScreen::getMonitors(std::vector<MonitorInfo> &monitors) const
+{
+  if (m_monitors.empty()) {
+    IScreen::getMonitors(monitors);
+    return;
+  }
+  monitors = m_monitors;
+}
+
 void XWindowsScreen::getCursorPos(int32_t &x, int32_t &y) const
 {
   Window root;
@@ -905,6 +914,9 @@ void XWindowsScreen::setShape(int32_t width, int32_t height)
   m_xCenter = m_x + (m_w >> 1);
   m_yCenter = m_y + (m_h >> 1);
 
+  // record the geometry of each individual monitor
+  m_monitors.clear();
+
   // check if xinerama is enabled and there is more than one screen.
   // get center of first Xinerama screen.  Xinerama appears to have
   // a bug when XWarpPointer() is used in combination with
@@ -936,12 +948,19 @@ void XWindowsScreen::setShape(int32_t width, int32_t height)
           );
           m_xCenter = std::max(m_xCenter, (screens[n].x_org + screens[n].width) >> 1);
           m_yCenter = std::max(m_yCenter, (screens[n].y_org + screens[n].height) >> 1);
+          m_monitors.push_back(MonitorInfo{screens[n].x_org, screens[n].y_org, screens[n].width, screens[n].height});
         }
       }
       XFree(screens);
     }
   }
 #endif
+
+  // fall back to a single monitor covering the whole screen when there is
+  // no (multi-head) xinerama information
+  if (m_monitors.empty()) {
+    m_monitors.push_back(MonitorInfo{m_x, m_y, m_w, m_h});
+  }
 
   LOG_DEBUG("center: %d,%d", m_xCenter, m_yCenter);
 }

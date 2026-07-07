@@ -272,6 +272,7 @@ public:
   void *getEventTarget() const override;
   bool getClipboard(ClipboardID id, IClipboard *) const override;
   void getShape(int32_t &x, int32_t &y, int32_t &width, int32_t &height) const override;
+  void getMonitors(std::vector<MonitorInfo> &monitors) const override;
   void getCursorPos(int32_t &x, int32_t &y) const override;
 
   IPlatformScreen *getPlatformScreen()

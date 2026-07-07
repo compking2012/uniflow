@@ -910,7 +910,7 @@ Additionally, check you are able to %1 the server config file: %2</source>
     <name>ScreenSetupModel</name>
     <message>
         <source>&lt;center&gt;Screen: &lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;Double click to edit settings&lt;br&gt;Drag screen to the trashcan to remove it</source>
-        <translation>&lt;center&gt;屏幕：&lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;双击编辑设置&lt;br&gt;将屏幕拖到垃圾桶以移除</translation>
+        <translation type="vanished">&lt;center&gt;屏幕：&lt;b&gt;%1&lt;/b&gt;&lt;/center&gt;&lt;br&gt;双击编辑设置&lt;br&gt;将屏幕拖到垃圾桶以移除</translation>
     </message>
 </context>
 <context>
@@ -944,15 +944,15 @@ Additionally, check you are able to %1 the server config file: %2</source>
     </message>
     <message>
         <source>Drag a computer from the grid to the trashcan to remove it.</source>
-        <translation>将计算机从网格拖到垃圾桶以将其移除。</translation>
+        <translation type="vanished">将计算机从网格拖到垃圾桶以将其移除。</translation>
     </message>
     <message>
         <source>Configure the layout of your computer displays by dragging to where you want.</source>
-        <translation>通过将计算机显示器拖动到所需位置来配置布局。</translation>
+        <translation type="vanished">通过将计算机显示器拖动到所需位置来配置布局。</translation>
     </message>
     <message>
         <source>Drag to the grid to add a new computer.</source>
-        <translation>拖动到网格以添加新计算机。</translation>
+        <translation type="vanished">拖动到网格以添加新计算机。</translation>
     </message>
     <message>
         <source>Hotkeys</source>
@@ -1083,6 +1083,18 @@ Enabling this setting will disable the server config GUI.</source>
         <translation>配置文件路径</translation>
     </message>
     <message>
+        <source>Monitor Layout...</source>
+        <translation type="obsolete">显示器布局…</translation>
+    </message>
+    <message>
+        <source>Monitor Layout</source>
+        <translation type="obsolete">显示器布局</translation>
+    </message>
+    <message>
+        <source>Add at least two screens before arranging their monitors.</source>
+        <translation type="obsolete">请先添加至少两个屏幕，然后再排列它们的显示器。</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation>%1 配置 (*.conf);;所有文件 (*.*)</translation>
@@ -1094,6 +1106,14 @@ Enabling this setting will disable the server config GUI.</source>
     <message>
         <source>Enable lock to computer at startup</source>
         <translation type="unfinished">启动时启用锁定到计算机</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1365,6 +1385,28 @@ Enabling this setting will disable the server config GUI.</source>
     <message>
         <source>Encryption Disabled</source>
         <translation>加密已禁用</translation>
+    </message>
+</context>
+<context>
+    <name>deskflow::gui::MonitorLayoutDialog</name>
+    <message>
+        <source>Monitor Layout</source>
+        <translation type="obsolete">显示器布局</translation>
+    </message>
+    <message>
+        <source>Drag each machine&apos;s monitors so they sit where they physically are relative to the other machines. Touching edges become direct cursor crossings.</source>
+        <translation type="obsolete">拖动每台计算机的显示器，使其位置与相对于其他计算机的实际物理位置一致。相邻的边缘将成为光标可直接跨越的位置。</translation>
+    </message>
+    <message>
+        <source>Reset Arrangement</source>
+        <translation type="obsolete">重置排列</translation>
+    </message>
+</context>
+<context>
+    <name>deskflow::gui::MonitorLayoutView</name>
+    <message>
+        <source>Remove Computer</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
