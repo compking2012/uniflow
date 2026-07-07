@@ -34,6 +34,7 @@
 #include "platform/OSXScreenSaver.h"
 
 #include <AppKit/NSEvent.h>
+#include <AppKit/NSScreen.h>
 #include <AvailabilityMacros.h>
 #include <IOKit/hidsystem/event_status_driver.h>
 #include <dispatch/dispatch.h>
@@ -1309,6 +1310,24 @@ IKeyState *OSXScreen::getKeyState() const
   return m_keyState;
 }
 
+namespace {
+
+//! Returns the human-readable name shown for \p displayID in System
+//! Settings > Displays (e.g. "Built-in Retina Display", "DELL U2720Q"), or
+//! an empty string if no matching NSScreen is found.
+std::string displayLocalizedName(CGDirectDisplayID displayID)
+{
+  for (NSScreen *screen in [NSScreen screens]) {
+    NSNumber *screenNumber = [screen.deviceDescription objectForKey:@"NSScreenNumber"];
+    if (screenNumber != nil && static_cast<CGDirectDisplayID>([screenNumber unsignedIntValue]) == displayID) {
+      return std::string([screen.localizedName UTF8String]);
+    }
+  }
+  return {};
+}
+
+} // namespace
+
 bool OSXScreen::updateScreenShape(const CGDirectDisplayID, const CGDisplayChangeSummaryFlags flags)
 {
   return updateScreenShape();
@@ -1346,7 +1365,8 @@ bool OSXScreen::updateScreenShape()
     CGRect bounds = CGDisplayBounds(displays[i]);
     totalBounds = CGRectUnion(totalBounds, bounds);
     monitors.push_back(MonitorInfo{
-        (int32_t)bounds.origin.x, (int32_t)bounds.origin.y, (int32_t)bounds.size.width, (int32_t)bounds.size.height
+        (int32_t)bounds.origin.x, (int32_t)bounds.origin.y, (int32_t)bounds.size.width, (int32_t)bounds.size.height,
+        displayLocalizedName(displays[i])
     });
   }
   m_monitors = std::move(monitors);

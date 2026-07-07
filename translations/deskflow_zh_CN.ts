@@ -584,15 +584,15 @@ Additionally, check you are able to %1 the server config file: %2</source>
     </message>
     <message>
         <source>Don&apos;t show this again</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">不再显示</translation>
     </message>
     <message>
         <source>Missing Keyboard Layouts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">缺少键盘布局</translation>
     </message>
     <message>
         <source>&lt;p&gt;Keyboard layout support requires matching layouts on all computers. The following layouts from the other computer are not installed on this computer:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Please install them to enable support for these layouts.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;键盘布局支持要求所有计算机上都安装匹配的布局。以下来自对方计算机的布局尚未安装在本计算机上：&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;请安装这些布局以启用对它们的支持。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -899,11 +899,11 @@ Additionally, check you are able to %1 the server config file: %2</source>
     </message>
     <message>
         <source>Alt Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt Gr</translation>
     </message>
     <message>
         <source>Alt &amp;Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt &amp;Gr</translation>
     </message>
 </context>
 <context>
@@ -1095,6 +1095,14 @@ Enabling this setting will disable the server config GUI.</source>
         <translation type="obsolete">请先添加至少两个屏幕，然后再排列它们的显示器。</translation>
     </message>
     <message>
+        <source>Filename invalid</source>
+        <translation type="unfinished">文件名无效</translation>
+    </message>
+    <message>
+        <source>Please select a valid configuration file.</source>
+        <translation type="unfinished">请选择一个有效的配置文件。</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation>%1 配置 (*.conf);;所有文件 (*.*)</translation>
@@ -1108,12 +1116,16 @@ Enabling this setting will disable the server config GUI.</source>
         <translation type="unfinished">启动时启用锁定到计算机</translation>
     </message>
     <message>
-        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished">将其拖动到画布上以添加新计算机。</translation>
     </message>
     <message>
-        <source>Drag to the canvas to add a new computer.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag a computer here to remove it.</source>
+        <translation type="unfinished">将计算机拖动到此处以将其移除。</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or drag it onto the trash can (or press Delete) to remove it.</source>
+        <translation type="unfinished">拖动每台计算机的显示器来排列它们。双击可编辑该计算机的设置，将其拖到垃圾桶（或按 Delete 键）即可将其移除。</translation>
     </message>
 </context>
 <context>
@@ -1405,8 +1417,28 @@ Enabling this setting will disable the server config GUI.</source>
 <context>
     <name>deskflow::gui::MonitorLayoutView</name>
     <message>
+        <source>Monitor %1</source>
+        <translation type="unfinished">显示器 %1</translation>
+    </message>
+    <message>
         <source>Remove Computer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">移除计算机</translation>
+    </message>
+    <message>
+        <source>The server&apos;s own computer can&apos;t be removed.</source>
+        <translation type="unfinished">服务器自身所在的计算机无法移除。</translation>
+    </message>
+    <message>
+        <source>Open Display Settings...</source>
+        <translation type="unfinished">打开显示设置…</translation>
+    </message>
+    <message>
+        <source>Open Display Settings</source>
+        <translation type="unfinished">打开显示设置</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t find a way to open display settings on this system. Please open it manually.</source>
+        <translation type="unfinished">无法在此系统上找到打开显示设置的方法，请手动打开。</translation>
     </message>
 </context>
 <context>

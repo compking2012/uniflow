@@ -37,6 +37,8 @@ ServerConfigDialog::ServerConfigDialog(QWidget *parent, ServerConfig &config)
   loadFromConfig();
 
   ui->lblNewScreen->setPixmap(QIcon::fromTheme("video-display").pixmap(QSize(64, 64)));
+  ui->lblRemoveScreen->setPixmap(QIcon::fromTheme("user-trash").pixmap(QSize(64, 64)));
+  ui->screenSetupView->setTrashWidget(ui->lblRemoveScreen);
   ui->btnBrowseConfigFile->setIcon(QIcon::fromTheme(QIcon::ThemeIcon::DocumentOpen));
 
   // force the first tab, since qt creator sets the active tab as the last one
@@ -62,7 +64,8 @@ void ServerConfigDialog::accept()
   if (ui->groupExternalConfig->isChecked() && !QFile::exists(ui->lineConfigFile->text())) {
 
     auto selectedButton = QMessageBox::warning(
-        this, "Filename invalid", "Please select a valid configuration file.", QMessageBox::Ok | QMessageBox::Ignore
+        this, tr("Filename invalid"), tr("Please select a valid configuration file."),
+        QMessageBox::Ok | QMessageBox::Ignore
     );
 
     if (selectedButton != QMessageBox::Ok || !browseConfigFile()) {
@@ -343,7 +346,7 @@ void ServerConfigDialog::addClient()
   addComputer("", false);
 }
 
-void ServerConfigDialog::setMonitorLayouts(const QMap<QString, QList<QRect>> &layouts)
+void ServerConfigDialog::setMonitorLayouts(const QMap<QString, QList<MonitorTile>> &layouts)
 {
   for (auto it = layouts.constBegin(); it != layouts.constEnd(); ++it) {
     ui->screenSetupView->refreshMonitors(it.key(), it.value());

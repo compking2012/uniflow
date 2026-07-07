@@ -100,21 +100,21 @@ bool Screen::operator==(const Screen &screen) const
          (!m_HasCanvasPos || m_CanvasPos == screen.m_CanvasPos);
 }
 
-void Screen::setMonitors(const QList<QRect> &monitors)
+void Screen::setMonitors(const QList<MonitorTile> &monitors)
 {
   QRect box;
-  for (const auto &r : monitors) {
-    box = box.isNull() ? r : box.united(r);
+  for (const auto &tile : monitors) {
+    box = box.isNull() ? tile.rect : box.united(tile.rect);
   }
   if (box.isNull()) {
     m_Monitors = monitors;
     return;
   }
 
-  QList<QRect> normalised;
+  QList<MonitorTile> normalised;
   normalised.reserve(monitors.size());
-  for (const auto &r : monitors) {
-    normalised.append(r.translated(-box.topLeft()));
+  for (const auto &tile : monitors) {
+    normalised.append(MonitorTile{tile.rect.translated(-box.topLeft()), tile.name});
   }
   m_Monitors = normalised;
 }

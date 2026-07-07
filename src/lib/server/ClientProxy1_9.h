@@ -33,6 +33,7 @@ protected:
 
 private:
   bool recvInfoMonitors();
+  bool recvInfoMonitorNames();
 
   // per-monitor geometry received from the client, in the client's virtual
   // desktop coordinate system.  empty until a kMsgDInfoMonitors is received.

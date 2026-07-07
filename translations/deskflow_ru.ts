@@ -584,15 +584,15 @@ Additionally, check you are able to %1 the server config file: %2</source>
     </message>
     <message>
         <source>Don&apos;t show this again</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Больше не показывать</translation>
     </message>
     <message>
         <source>Missing Keyboard Layouts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Отсутствуют раскладки клавиатуры</translation>
     </message>
     <message>
         <source>&lt;p&gt;Keyboard layout support requires matching layouts on all computers. The following layouts from the other computer are not installed on this computer:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Please install them to enable support for these layouts.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Для поддержки раскладок клавиатуры на всех компьютерах должны быть установлены одинаковые раскладки. Следующие раскладки с другого компьютера не установлены на этом компьютере:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Установите их, чтобы включить поддержку этих раскладок.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -897,11 +897,11 @@ Additionally, check you are able to %1 the server config file: %2</source>
     </message>
     <message>
         <source>Alt Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt Gr</translation>
     </message>
     <message>
         <source>Alt &amp;Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt &amp;Gr</translation>
     </message>
 </context>
 <context>
@@ -1091,6 +1091,14 @@ Enabling this setting will disable the server config GUI.</source>
         <translation type="obsolete">Добавьте не менее двух экранов, прежде чем располагать их мониторы.</translation>
     </message>
     <message>
+        <source>Filename invalid</source>
+        <translation type="unfinished">Неверное имя файла</translation>
+    </message>
+    <message>
+        <source>Please select a valid configuration file.</source>
+        <translation type="unfinished">Выберите корректный файл конфигурации.</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation>Конфигурации %1 (*.conf);;Все файлы (*.*)</translation>
@@ -1104,12 +1112,16 @@ Enabling this setting will disable the server config GUI.</source>
         <translation>Включать привязку к компьютеру при запуске</translation>
     </message>
     <message>
-        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished">Перетащите на холст, чтобы добавить новый компьютер.</translation>
     </message>
     <message>
-        <source>Drag to the canvas to add a new computer.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag a computer here to remove it.</source>
+        <translation type="unfinished">Перетащите сюда компьютер, чтобы удалить его.</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or drag it onto the trash can (or press Delete) to remove it.</source>
+        <translation type="unfinished">Перетащите мониторы каждого компьютера, чтобы расположить их. Дважды щёлкните, чтобы изменить настройки компьютера, или перетащите его в корзину (либо нажмите Delete), чтобы удалить.</translation>
     </message>
 </context>
 <context>
@@ -1403,8 +1415,28 @@ Enabling this setting will disable the server config GUI.</source>
 <context>
     <name>deskflow::gui::MonitorLayoutView</name>
     <message>
+        <source>Monitor %1</source>
+        <translation type="unfinished">Монитор %1</translation>
+    </message>
+    <message>
         <source>Remove Computer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Удалить компьютер</translation>
+    </message>
+    <message>
+        <source>The server&apos;s own computer can&apos;t be removed.</source>
+        <translation type="unfinished">Собственный компьютер сервера нельзя удалить.</translation>
+    </message>
+    <message>
+        <source>Open Display Settings...</source>
+        <translation type="unfinished">Открыть параметры экрана…</translation>
+    </message>
+    <message>
+        <source>Open Display Settings</source>
+        <translation type="unfinished">Открыть параметры экрана</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t find a way to open display settings on this system. Please open it manually.</source>
+        <translation type="unfinished">Не удалось найти способ открыть параметры экрана в этой системе. Откройте их вручную.</translation>
     </message>
 </context>
 <context>

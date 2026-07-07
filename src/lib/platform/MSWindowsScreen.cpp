@@ -1448,10 +1448,83 @@ void MSWindowsScreen::updateScreenShape()
   m_desks->setShape(m_x, m_y, m_w, m_h, m_xCenter, m_yCenter, m_multimon);
 }
 
-BOOL CALLBACK MSWindowsScreen::monitorEnumProc(HMONITOR, HDC, LPRECT rect, LPARAM data)
+namespace {
+
+//! Converts a wide string to UTF-8.
+std::string wideToUtf8(const std::wstring &wide)
+{
+  if (wide.empty()) {
+    return {};
+  }
+  int len = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), static_cast<int>(wide.size()), nullptr, 0, nullptr, nullptr);
+  if (len <= 0) {
+    return {};
+  }
+  std::string result(static_cast<size_t>(len), '\0');
+  WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), static_cast<int>(wide.size()), result.data(), len, nullptr, nullptr);
+  return result;
+}
+
+//! Returns the friendly monitor name (as shown in Settings > Display) for
+//! the display identified by \p gdiDeviceName (e.g. "\\.\DISPLAY1"), or an
+//! empty string if it can't be determined.
+std::string friendlyMonitorName(const std::wstring &gdiDeviceName)
+{
+  UINT32 numPaths = 0;
+  UINT32 numModes = 0;
+  if (GetDisplayConfigBufferSizes(QDC_ONLY_ACTIVE_PATHS, &numPaths, &numModes) != ERROR_SUCCESS) {
+    return {};
+  }
+
+  std::vector<DISPLAYCONFIG_PATH_INFO> paths(numPaths);
+  std::vector<DISPLAYCONFIG_MODE_INFO> modes(numModes);
+  if (QueryDisplayConfig(QDC_ONLY_ACTIVE_PATHS, &numPaths, paths.data(), &numModes, modes.data(), nullptr) !=
+      ERROR_SUCCESS) {
+    return {};
+  }
+
+  for (const auto &path : paths) {
+    DISPLAYCONFIG_SOURCE_DEVICE_NAME sourceName{};
+    sourceName.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME;
+    sourceName.header.size = sizeof(sourceName);
+    sourceName.header.adapterId = path.sourceInfo.adapterId;
+    sourceName.header.id = path.sourceInfo.id;
+    if (DisplayConfigGetDeviceInfo(&sourceName.header) != ERROR_SUCCESS) {
+      continue;
+    }
+    if (gdiDeviceName != std::wstring(sourceName.viewGdiDeviceName)) {
+      continue;
+    }
+
+    DISPLAYCONFIG_TARGET_DEVICE_NAME targetName{};
+    targetName.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_NAME;
+    targetName.header.size = sizeof(targetName);
+    targetName.header.adapterId = path.targetInfo.adapterId;
+    targetName.header.id = path.targetInfo.id;
+    if (DisplayConfigGetDeviceInfo(&targetName.header) != ERROR_SUCCESS) {
+      continue;
+    }
+    return wideToUtf8(targetName.monitorFriendlyDeviceName);
+  }
+  return {};
+}
+
+} // namespace
+
+BOOL CALLBACK MSWindowsScreen::monitorEnumProc(HMONITOR monitor, HDC, LPRECT rect, LPARAM data)
 {
   auto *monitors = reinterpret_cast<std::vector<MonitorInfo> *>(data);
-  monitors->push_back(MonitorInfo{rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top});
+
+  std::string name;
+  MONITORINFOEXW info{};
+  info.cbSize = sizeof(info);
+  if (GetMonitorInfoW(monitor, reinterpret_cast<MONITORINFO *>(&info))) {
+    name = friendlyMonitorName(info.szDevice);
+  }
+
+  monitors->push_back(
+      MonitorInfo{rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top, std::move(name)}
+  );
   return TRUE;
 }
 

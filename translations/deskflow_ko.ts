@@ -584,15 +584,15 @@ Additionally, check you are able to %1 the server config file: %2</source>
     </message>
     <message>
         <source>Don&apos;t show this again</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">다시 표시하지 않음</translation>
     </message>
     <message>
         <source>Missing Keyboard Layouts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">키보드 레이아웃 누락</translation>
     </message>
     <message>
         <source>&lt;p&gt;Keyboard layout support requires matching layouts on all computers. The following layouts from the other computer are not installed on this computer:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Please install them to enable support for these layouts.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;키보드 레이아웃을 사용하려면 모든 컴퓨터에 동일한 레이아웃이 설치되어 있어야 합니다. 다른 컴퓨터의 다음 레이아웃이 이 컴퓨터에는 설치되어 있지 않습니다:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;이 레이아웃을 지원하려면 설치해 주세요.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -897,11 +897,11 @@ Additionally, check you are able to %1 the server config file: %2</source>
     </message>
     <message>
         <source>Alt Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt Gr</translation>
     </message>
     <message>
         <source>Alt &amp;Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt &amp;Gr</translation>
     </message>
 </context>
 <context>
@@ -1093,6 +1093,14 @@ Enabling this setting will disable the server config GUI.</source>
         <translation type="obsolete">모니터를 배치하기 전에 화면을 두 개 이상 추가하세요.</translation>
     </message>
     <message>
+        <source>Filename invalid</source>
+        <translation type="unfinished">파일 이름이 유효하지 않습니다</translation>
+    </message>
+    <message>
+        <source>Please select a valid configuration file.</source>
+        <translation type="unfinished">유효한 설정 파일을 선택하세요.</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation>%1 설정 (*.conf);;모든 파일 (*.*)</translation>
@@ -1106,12 +1114,16 @@ Enabling this setting will disable the server config GUI.</source>
         <translation>시작 시 컴퓨터 잠금 사용</translation>
     </message>
     <message>
-        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished">캔버스로 드래그하여 새 컴퓨터를 추가하세요.</translation>
     </message>
     <message>
-        <source>Drag to the canvas to add a new computer.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag a computer here to remove it.</source>
+        <translation type="unfinished">컴퓨터를 이곳으로 드래그하면 제거됩니다.</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or drag it onto the trash can (or press Delete) to remove it.</source>
+        <translation type="unfinished">각 컴퓨터의 모니터를 드래그하여 배치하세요. 더블 클릭하면 컴퓨터 설정을 편집할 수 있고, 휴지통으로 드래그하거나 Delete 키를 누르면 제거할 수 있습니다.</translation>
     </message>
 </context>
 <context>
@@ -1403,8 +1415,28 @@ Enabling this setting will disable the server config GUI.</source>
 <context>
     <name>deskflow::gui::MonitorLayoutView</name>
     <message>
+        <source>Monitor %1</source>
+        <translation type="unfinished">모니터 %1</translation>
+    </message>
+    <message>
         <source>Remove Computer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">컴퓨터 제거</translation>
+    </message>
+    <message>
+        <source>The server&apos;s own computer can&apos;t be removed.</source>
+        <translation type="unfinished">서버 자신의 컴퓨터는 제거할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Open Display Settings...</source>
+        <translation type="unfinished">디스플레이 설정 열기…</translation>
+    </message>
+    <message>
+        <source>Open Display Settings</source>
+        <translation type="unfinished">디스플레이 설정 열기</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t find a way to open display settings on this system. Please open it manually.</source>
+        <translation type="unfinished">이 시스템에서 디스플레이 설정을 여는 방법을 찾을 수 없습니다. 수동으로 열어 주세요.</translation>
     </message>
 </context>
 <context>

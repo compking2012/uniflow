@@ -1203,7 +1203,7 @@ void MainWindow::serverClientsChanged(const QStringList &clients)
   m_statusBar->setServerClients(clients);
 }
 
-void MainWindow::serverClientMonitorsChanged(const QMap<QString, QList<QRect>> &monitors)
+void MainWindow::serverClientMonitorsChanged(const QMap<QString, QList<MonitorTile>> &monitors)
 {
   // remember the latest per-machine monitor layout so the monitor layout
   // editor (in the server config dialog) can arrange individual monitors.

@@ -161,7 +161,7 @@ private:
   Fingerprint m_fingerprint;
 
   void serverClientsChanged(const QStringList &clients);
-  void serverClientMonitorsChanged(const QMap<QString, QList<QRect>> &monitors);
+  void serverClientMonitorsChanged(const QMap<QString, QList<MonitorTile>> &monitors);
 
   inline static const auto m_guiSocketName = QStringLiteral("deskflow-gui");
   inline static const auto m_nameRegEx = QRegularExpression(QStringLiteral("^[\\w\\-_\\.]{0,255}$"));
@@ -173,7 +173,7 @@ private:
   ServerConfig m_serverConfig;
   deskflow::gui::CoreProcess m_coreProcess;
   QSet<QString> m_ignoredClients;
-  QMap<QString, QList<QRect>> m_clientMonitors;
+  QMap<QString, QList<MonitorTile>> m_clientMonitors;
   bool m_newClientPromptShowing = false;
   bool m_serverConfigDialogVisible = false;
   QSize m_expandedSize = QSize();

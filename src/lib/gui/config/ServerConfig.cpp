@@ -149,8 +149,8 @@ QTextStream &operator<<(QTextStream &outStream, const ServerConfig &config)
     if (s.isNull())
       continue;
     QList<QRect> translated;
-    for (const QRect &r : s.monitors())
-      translated.append(r.translated(s.canvasPos()));
+    for (const MonitorTile &tile : s.monitors())
+      translated.append(tile.rect.translated(s.canvasPos()));
     if (translated.isEmpty())
       translated.append(QRect(s.canvasPos(), QSize(1920, 1080)));
     layout.insert(s.name(), translated);

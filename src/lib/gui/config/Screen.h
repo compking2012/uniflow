@@ -24,6 +24,21 @@ class QSettings;
 class QTextStream;
 class ScreenSettingsDialog;
 
+//! One physical monitor belonging to a machine, in that machine's own local
+//! coordinates (see Screen::monitors()).
+struct MonitorTile
+{
+  QRect rect;
+  //! Human-readable name as shown in the OS's own display settings (e.g.
+  //! "Built-in Retina Display", "DELL U2720Q", "HDMI-1"); empty if unknown.
+  QString name;
+
+  bool operator==(const MonitorTile &o) const
+  {
+    return rect == o.rect && name == o.name;
+  }
+};
+
 class Screen : public ScreenConfig
 {
   friend class ScreenSettingsDialog;
@@ -136,15 +151,16 @@ public:
   //! always a live snapshot of the machine's real, OS-reported display
   //! layout (or a single placeholder monitor before any data is known) --
   //! it is never user-edited and is not persisted.
-  [[nodiscard]] const QList<QRect> &monitors() const
+  [[nodiscard]] const QList<MonitorTile> &monitors() const
   {
     return m_Monitors;
   }
-  //! Sets this machine's monitors from raw OS/IPC-reported rects, which are
-  //! typically in that machine's own virtual-desktop coordinates (not
-  //! zero-based).  Normalises them so the bounding box's top-left is at the
-  //! origin, matching monitors()'s documented invariant.
-  void setMonitors(const QList<QRect> &monitors);
+  //! Sets this machine's monitors from raw OS/IPC-reported tiles, whose
+  //! rects are typically in that machine's own virtual-desktop coordinates
+  //! (not zero-based).  Normalises them so the bounding box's top-left is
+  //! at the origin, matching monitors()'s documented invariant.  Names are
+  //! carried through unchanged.
+  void setMonitors(const QList<MonitorTile> &monitors);
 
   bool operator==(const Screen &screen) const;
 
@@ -202,5 +218,5 @@ private:
   bool m_isServer = false;
   QPoint m_CanvasPos;
   bool m_HasCanvasPos = false;
-  QList<QRect> m_Monitors;
+  QList<MonitorTile> m_Monitors;
 };

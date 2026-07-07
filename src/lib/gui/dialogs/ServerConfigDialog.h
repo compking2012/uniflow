@@ -32,10 +32,10 @@ public:
   bool addClient(const QString &clientName);
 
   //! Provide each connected machine's real monitor layout (name -> monitor
-  //! rects, in that machine's own virtual-desktop coordinates) so the
+  //! tiles, in that machine's own virtual-desktop coordinates) so the
   //! canvas can render each computer's actual, live display arrangement.
   //! Safe to call while the dialog is open -- refreshes shapes in place.
-  void setMonitorLayouts(const QMap<QString, QList<QRect>> &layouts);
+  void setMonitorLayouts(const QMap<QString, QList<MonitorTile>> &layouts);
 
 public Q_SLOTS:
   void accept() override;

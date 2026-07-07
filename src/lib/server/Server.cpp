@@ -316,15 +316,23 @@ void Server::sendConnectedClientsIpc() const
 
 void Server::sendClientMonitorsIpc() const
 {
-  // format: "<screen>:x,y,w,h;x,y,w,h|<screen>:x,y,w,h|..."  includes the
-  // primary (server) screen so the GUI can arrange every machine's monitors.
+  // format: "<screen>:x,y,w,h,name;x,y,w,h,name|<screen>:x,y,w,h,name|..."
+  // includes the primary (server) screen so the GUI can arrange every
+  // machine's monitors.  name is percent-encoded since it may itself
+  // contain any of the delimiter characters used above.
   QStringList entries;
   for (const auto &[name, proxy] : m_clients) {
     std::vector<MonitorInfo> monitors;
     proxy->getMonitors(monitors);
     QStringList rects;
     for (const auto &m : monitors) {
-      rects.append(QStringLiteral("%1,%2,%3,%4").arg(m.x).arg(m.y).arg(m.w).arg(m.h));
+      QString encodedName = QString::fromStdString(m.name)
+                                 .replace('%', "%25")
+                                 .replace(',', "%2C")
+                                 .replace(';', "%3B")
+                                 .replace('|', "%7C")
+                                 .replace(':', "%3A");
+      rects.append(QStringLiteral("%1,%2,%3,%4,%5").arg(m.x).arg(m.y).arg(m.w).arg(m.h).arg(encodedName));
     }
     entries.append(QString::fromStdString(name) + ":" + rects.join(";"));
   }

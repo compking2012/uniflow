@@ -89,7 +89,7 @@ Q_SIGNALS:
   void secureSocket(bool enabled);
   void daemonIpcClientConnectionFailed();
   void connectedClientsChanged(const QStringList &clients);
-  void clientMonitorsChanged(const QMap<QString, QList<QRect>> &monitors);
+  void clientMonitorsChanged(const QMap<QString, QList<MonitorTile>> &monitors);
   void securityLevelChanged(QString securityLevel);
   void unrecognisedClient(const QString &clientName);
   void connectionRefused(deskflow::core::ConnectionRefusal reason);

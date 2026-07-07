@@ -8,6 +8,7 @@
 
 #include "base/IEventQueue.h"
 #include "base/Log.h"
+#include "deskflow/MonitorNames.h"
 #include "deskflow/ProtocolTypes.h"
 #include "deskflow/ProtocolUtil.h"
 
@@ -47,6 +48,13 @@ bool ClientProxy1_9::parseMessage(const uint8_t *code)
     }
     return false;
   }
+  if (memcmp(code, kMsgDInfoMonitorNames, 4) == 0) {
+    if (recvInfoMonitorNames()) {
+      m_events->addEvent(Event(EventTypes::ScreenShapeChanged, getEventTarget()));
+      return true;
+    }
+    return false;
+  }
   return ClientProxy1_8::parseMessage(code);
 }
 
@@ -70,5 +78,21 @@ bool ClientProxy1_9::recvInfoMonitors()
   m_monitors = std::move(monitors);
 
   LOG_DEBUG("received client \"%s\" monitor layout: %d monitor(s)", getName().c_str(), (int)m_monitors.size());
+  return true;
+}
+
+bool ClientProxy1_9::recvInfoMonitorNames()
+{
+  std::string joined;
+  if (!ProtocolUtil::readf(getStream(), kMsgDInfoMonitorNames + 4, &joined)) {
+    return false;
+  }
+
+  const std::vector<std::string> names = deskflow::splitMonitorNames(joined, m_monitors.size());
+  for (size_t i = 0; i < names.size(); ++i) {
+    m_monitors[i].name = names[i];
+  }
+
+  LOG_DEBUG("received client \"%s\" monitor names", getName().c_str());
   return true;
 }

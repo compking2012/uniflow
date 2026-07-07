@@ -584,15 +584,15 @@ Además, verifique que puede %1 el archivo de configuración del servidor: %2</t
     </message>
     <message>
         <source>Don&apos;t show this again</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No volver a mostrar esto</translation>
     </message>
     <message>
         <source>Missing Keyboard Layouts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Faltan diseños de teclado</translation>
     </message>
     <message>
         <source>&lt;p&gt;Keyboard layout support requires matching layouts on all computers. The following layouts from the other computer are not installed on this computer:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Please install them to enable support for these layouts.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;La compatibilidad con diseños de teclado requiere diseños coincidentes en todas las computadoras. Los siguientes diseños de la otra computadora no están instalados en esta computadora:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Instálalos para habilitar la compatibilidad con estos diseños.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -897,11 +897,11 @@ Además, verifique que puede %1 el archivo de configuración del servidor: %2</t
     </message>
     <message>
         <source>Alt Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt Gr</translation>
     </message>
     <message>
         <source>Alt &amp;Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt &amp;Gr</translation>
     </message>
 </context>
 <context>
@@ -1093,6 +1093,14 @@ Al habilitar esta opción, se deshabilitará la interfaz gráfica de usuario (GU
         <translation type="obsolete">Agrega al menos dos pantallas antes de organizar sus monitores.</translation>
     </message>
     <message>
+        <source>Filename invalid</source>
+        <translation type="unfinished">Nombre de archivo no válido</translation>
+    </message>
+    <message>
+        <source>Please select a valid configuration file.</source>
+        <translation type="unfinished">Selecciona un archivo de configuración válido.</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation type="unfinished">%1 Configuraciones (*.conf);;Todos los archivos (*.*)</translation>
@@ -1106,12 +1114,16 @@ Al habilitar esta opción, se deshabilitará la interfaz gráfica de usuario (GU
         <translation type="unfinished">Activar el bloqueo del ordenador al iniciar</translation>
     </message>
     <message>
-        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished">Arrástralo al lienzo para añadir una computadora nueva.</translation>
     </message>
     <message>
-        <source>Drag to the canvas to add a new computer.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag a computer here to remove it.</source>
+        <translation type="unfinished">Arrastra una computadora aquí para eliminarla.</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or drag it onto the trash can (or press Delete) to remove it.</source>
+        <translation type="unfinished">Arrastra los monitores de cada computadora para organizarlos. Haz doble clic para editar la configuración de una computadora, o arrástrala a la papelera (o presiona Suprimir) para eliminarla.</translation>
     </message>
 </context>
 <context>
@@ -1404,8 +1416,28 @@ Al habilitar esta opción, se deshabilitará la interfaz gráfica de usuario (GU
 <context>
     <name>deskflow::gui::MonitorLayoutView</name>
     <message>
+        <source>Monitor %1</source>
+        <translation type="unfinished">Monitor %1</translation>
+    </message>
+    <message>
         <source>Remove Computer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eliminar computadora</translation>
+    </message>
+    <message>
+        <source>The server&apos;s own computer can&apos;t be removed.</source>
+        <translation type="unfinished">No se puede eliminar la computadora del propio servidor.</translation>
+    </message>
+    <message>
+        <source>Open Display Settings...</source>
+        <translation type="unfinished">Abrir configuración de pantalla…</translation>
+    </message>
+    <message>
+        <source>Open Display Settings</source>
+        <translation type="unfinished">Abrir configuración de pantalla</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t find a way to open display settings on this system. Please open it manually.</source>
+        <translation type="unfinished">No se encontró una forma de abrir la configuración de pantalla en este sistema. Ábrela manualmente.</translation>
     </message>
 </context>
 <context>

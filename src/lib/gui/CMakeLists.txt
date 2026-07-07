@@ -33,6 +33,8 @@ add_library(${target} STATIC
   Messages.cpp
   Messages.h
   StyleUtils.h
+  SystemSettings.cpp
+  SystemSettings.h
   TlsUtility.cpp
   TlsUtility.h
   VersionChecker.cpp

@@ -14,6 +14,7 @@
 #include "deskflow/Clipboard.h"
 #include "deskflow/ClipboardChunk.h"
 #include "deskflow/DeskflowException.h"
+#include "deskflow/MonitorNames.h"
 #include "deskflow/OptionTypes.h"
 #include "deskflow/ProtocolTypes.h"
 #include "deskflow/ProtocolUtil.h"
@@ -850,6 +851,17 @@ void ServerProxy::sendInfoMonitors()
 
   LOG_VERBOSE("sending monitor layout: %d monitor(s)", (int)monitors.size());
   ProtocolUtil::writef(m_stream, kMsgDInfoMonitors, &data);
+
+  // send each monitor's display name, in the same order, joined with the
+  // ASCII Unit Separator -- ProtocolUtil has no "list of strings" format,
+  // and display names never contain this control character.
+  std::vector<std::string> names;
+  names.reserve(monitors.size());
+  for (const MonitorInfo &m : monitors) {
+    names.push_back(m.name);
+  }
+  std::string joined = deskflow::joinMonitorNames(names);
+  ProtocolUtil::writef(m_stream, kMsgDInfoMonitorNames, &joined);
 }
 
 void ServerProxy::infoAcknowledgment()

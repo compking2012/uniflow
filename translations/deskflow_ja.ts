@@ -1095,6 +1095,14 @@ Enabling this setting will disable the server config GUI.</source>
         <translation type="vanished">モニターを配置する前に、画面を2台以上追加してください。</translation>
     </message>
     <message>
+        <source>Filename invalid</source>
+        <translation>ファイル名が無効です</translation>
+    </message>
+    <message>
+        <source>Please select a valid configuration file.</source>
+        <translation>有効な設定ファイルを選択してください。</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation>%1 設定 (*.conf);;すべてのファイル (*.*)</translation>
@@ -1108,12 +1116,16 @@ Enabling this setting will disable the server config GUI.</source>
         <translation>起動時にコンピューター間移動のロックを有効にする</translation>
     </message>
     <message>
-        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation>キャンバスにドラッグして新しいコンピューターを追加します。</translation>
     </message>
     <message>
-        <source>Drag to the canvas to add a new computer.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag a computer here to remove it.</source>
+        <translation>コンピューターをここにドラッグして削除します。</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or drag it onto the trash can (or press Delete) to remove it.</source>
+        <translation>各コンピューターのモニターをドラッグして配置します。ダブルクリックでコンピューターの設定を編集するか、ゴミ箱にドラッグする（または Delete キーを押す）と削除できます。</translation>
     </message>
 </context>
 <context>
@@ -1405,8 +1417,28 @@ Enabling this setting will disable the server config GUI.</source>
 <context>
     <name>deskflow::gui::MonitorLayoutView</name>
     <message>
+        <source>Monitor %1</source>
+        <translation>モニター %1</translation>
+    </message>
+    <message>
         <source>Remove Computer</source>
-        <translation type="unfinished"></translation>
+        <translation>コンピューターを削除</translation>
+    </message>
+    <message>
+        <source>The server&apos;s own computer can&apos;t be removed.</source>
+        <translation>サーバー自身のコンピューターは削除できません。</translation>
+    </message>
+    <message>
+        <source>Open Display Settings...</source>
+        <translation>ディスプレイ設定を開く…</translation>
+    </message>
+    <message>
+        <source>Open Display Settings</source>
+        <translation>ディスプレイ設定を開く</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t find a way to open display settings on this system. Please open it manually.</source>
+        <translation>このシステムでディスプレイ設定を開く方法が見つかりませんでした。手動で開いてください。</translation>
     </message>
 </context>
 <context>

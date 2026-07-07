@@ -67,13 +67,18 @@ void ScreenTests::monitorsAreNormalisedAndNotPersisted()
   Screen screen("multiMonitor");
 
   // raw OS-reported rects are typically NOT zero-based
-  screen.setMonitors({QRect(1000, 500, 1920, 1080), QRect(2920, 500, 1920, 1080)});
+  screen.setMonitors(
+      {MonitorTile{QRect(1000, 500, 1920, 1080), "Left"}, MonitorTile{QRect(2920, 500, 1920, 1080), "Right"}}
+  );
 
   const auto monitors = screen.monitors();
   QCOMPARE(monitors.size(), 2);
-  // normalised so the bounding box's top-left is at the origin
-  QCOMPARE(monitors[0], QRect(0, 0, 1920, 1080));
-  QCOMPARE(monitors[1], QRect(1920, 0, 1920, 1080));
+  // normalised so the bounding box's top-left is at the origin; names are
+  // carried through unchanged
+  QCOMPARE(monitors[0].rect, QRect(0, 0, 1920, 1080));
+  QCOMPARE(monitors[0].name, QStringLiteral("Left"));
+  QCOMPARE(monitors[1].rect, QRect(1920, 0, 1920, 1080));
+  QCOMPARE(monitors[1].name, QStringLiteral("Right"));
 
   // monitors are a runtime-only cache: never persisted
   screen.saveSettings(Settings::proxy());

@@ -584,15 +584,15 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
     </message>
     <message>
         <source>Don&apos;t show this again</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Non mostrare più questo messaggio</translation>
     </message>
     <message>
         <source>Missing Keyboard Layouts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Layout di tastiera mancanti</translation>
     </message>
     <message>
         <source>&lt;p&gt;Keyboard layout support requires matching layouts on all computers. The following layouts from the other computer are not installed on this computer:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Please install them to enable support for these layouts.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;p&gt;Il supporto ai layout di tastiera richiede layout corrispondenti su tutti i computer. I seguenti layout dell&apos;altro computer non sono installati su questo computer:&lt;/p&gt;&lt;p&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Installali per abilitare il supporto a questi layout.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -897,11 +897,11 @@ Inoltre, verifica di poter %1 il file di configurazione del server: %2</translat
     </message>
     <message>
         <source>Alt Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt Gr</translation>
     </message>
     <message>
         <source>Alt &amp;Gr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alt &amp;Gr</translation>
     </message>
 </context>
 <context>
@@ -1093,6 +1093,14 @@ L&apos;abilitazione di questa impostazione disabiliterà l&apos;interfaccia graf
         <translation type="obsolete">Aggiungi almeno due schermi prima di disporre i relativi monitor.</translation>
     </message>
     <message>
+        <source>Filename invalid</source>
+        <translation type="unfinished">Nome file non valido</translation>
+    </message>
+    <message>
+        <source>Please select a valid configuration file.</source>
+        <translation type="unfinished">Seleziona un file di configurazione valido.</translation>
+    </message>
+    <message>
         <source>%1 Configurations (*.conf);;All files (*.*)</source>
         <extracomment>%1 is replaced with the application names (*.conf) and (*.*) should not be translated</extracomment>
         <translation>%1 Configurazioni (*.conf);;Tutti i file (*.*)</translation>
@@ -1106,12 +1114,16 @@ L&apos;abilitazione di questa impostazione disabiliterà l&apos;interfaccia graf
         <translation type="unfinished">Abilita il blocco al computer all&apos;avvio</translation>
     </message>
     <message>
-        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or right-click (or press Delete) to remove it.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag to the canvas to add a new computer.</source>
+        <translation type="unfinished">Trascina nell&apos;area di lavoro per aggiungere un nuovo computer.</translation>
     </message>
     <message>
-        <source>Drag to the canvas to add a new computer.</source>
-        <translation type="unfinished"></translation>
+        <source>Drag a computer here to remove it.</source>
+        <translation type="unfinished">Trascina qui un computer per rimuoverlo.</translation>
+    </message>
+    <message>
+        <source>Drag each computer&apos;s monitors to arrange them. Double-click to edit a computer&apos;s settings, or drag it onto the trash can (or press Delete) to remove it.</source>
+        <translation type="unfinished">Trascina i monitor di ciascun computer per disporli. Fai doppio clic per modificare le impostazioni di un computer, oppure trascinalo nel cestino (o premi Canc) per rimuoverlo.</translation>
     </message>
 </context>
 <context>
@@ -1404,8 +1416,28 @@ L&apos;abilitazione di questa impostazione disabiliterà l&apos;interfaccia graf
 <context>
     <name>deskflow::gui::MonitorLayoutView</name>
     <message>
+        <source>Monitor %1</source>
+        <translation type="unfinished">Monitor %1</translation>
+    </message>
+    <message>
         <source>Remove Computer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rimuovi computer</translation>
+    </message>
+    <message>
+        <source>The server&apos;s own computer can&apos;t be removed.</source>
+        <translation type="unfinished">Il computer del server non può essere rimosso.</translation>
+    </message>
+    <message>
+        <source>Open Display Settings...</source>
+        <translation type="unfinished">Apri impostazioni schermo…</translation>
+    </message>
+    <message>
+        <source>Open Display Settings</source>
+        <translation type="unfinished">Apri impostazioni schermo</translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t find a way to open display settings on this system. Please open it manually.</source>
+        <translation type="unfinished">Impossibile trovare un modo per aprire le impostazioni dello schermo su questo sistema. Aprile manualmente.</translation>
     </message>
 </context>
 <context>

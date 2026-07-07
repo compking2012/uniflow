@@ -15,11 +15,14 @@ constexpr int kCanvasGap = 200;
 
 QRect canvasBoundingBox(const Screen &screen)
 {
-  auto monitors = screen.monitors();
-  if (monitors.isEmpty()) {
-    monitors = {QRect(0, 0, 1920, 1080)};
+  QList<QRect> rects;
+  for (const auto &tile : screen.monitors()) {
+    rects.append(tile.rect);
   }
-  return deskflow::gui::detail::monitorsBoundingBox(monitors).translated(screen.canvasPos());
+  if (rects.isEmpty()) {
+    rects = {QRect(0, 0, 1920, 1080)};
+  }
+  return deskflow::gui::detail::monitorsBoundingBox(rects).translated(screen.canvasPos());
 }
 
 } // namespace

@@ -956,6 +956,38 @@ void XWindowsScreen::setShape(int32_t width, int32_t height)
   }
 #endif
 
+  // match each Xinerama-derived monitor to its RandR output, by exact
+  // geometry, to recover the connector name (e.g. "HDMI-1", "eDP-1") shown
+  // in most desktop environments' own display settings.  Xinerama and
+  // RandR don't share IDs, so geometry is the only common key.
+#if HAVE_X11_EXTENSIONS_XRANDR_H
+  if (m_xrandr) {
+    if (XRRScreenResources *resources = XRRGetScreenResources(m_display, DefaultRootWindow(m_display))) {
+      for (int i = 0; i < resources->noutput; ++i) {
+        XRROutputInfo *outputInfo = XRRGetOutputInfo(m_display, resources, resources->outputs[i]);
+        if (outputInfo == nullptr) {
+          continue;
+        }
+        if (outputInfo->connection == RR_Connected && outputInfo->crtc != None) {
+          if (XRRCrtcInfo *crtcInfo = XRRGetCrtcInfo(m_display, resources, outputInfo->crtc)) {
+            for (auto &monitor : m_monitors) {
+              if (monitor.x == static_cast<int32_t>(crtcInfo->x) && monitor.y == static_cast<int32_t>(crtcInfo->y) &&
+                  monitor.w == static_cast<int32_t>(crtcInfo->width) &&
+                  monitor.h == static_cast<int32_t>(crtcInfo->height)) {
+                monitor.name.assign(outputInfo->name, static_cast<size_t>(outputInfo->nameLen));
+                break;
+              }
+            }
+            XRRFreeCrtcInfo(crtcInfo);
+          }
+        }
+        XRRFreeOutputInfo(outputInfo);
+      }
+      XRRFreeScreenResources(resources);
+    }
+  }
+#endif
+
   // fall back to a single monitor covering the whole screen when there is
   // no (multi-head) xinerama information
   if (m_monitors.empty()) {

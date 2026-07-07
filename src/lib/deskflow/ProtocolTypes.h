@@ -983,6 +983,29 @@ extern const char *const kMsgDInfo;
 extern const char *const kMsgDInfoMonitors;
 
 /**
+ * @brief Client individual monitor display names
+ *
+ * **Message Code**: `"DINM"`
+ * **Direction**: Secondary → Primary
+ * **Format**: `"DINM%s"`
+ * **Parameters**:
+ * - `$1`: The human-readable name of each monitor listed in the preceding
+ *   kMsgDInfoMonitors message (e.g. "Built-in Retina Display",
+ *   "DELL U2720Q", "HDMI-1"), in the same order, joined with the ASCII Unit
+ *   Separator character (0x1F).  A monitor whose name could not be
+ *   determined contributes an empty segment.
+ *
+ * Sent immediately after kMsgDInfoMonitors, only when that message was
+ * sent.  Peers that never send this message (older clients, or platforms
+ * that can't resolve a display name) leave every monitor's name empty; the
+ * server falls back to a generic "Monitor N" label.
+ *
+ * @see kMsgDInfoMonitors
+ * @since Protocol version 1.9
+ */
+extern const char *const kMsgDInfoMonitorNames;
+
+/**
  * @brief Set client options
  *
  * **Message Code**: `"DSOP"`

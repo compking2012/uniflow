@@ -28,14 +28,17 @@ void GuiServerConfigTests::linksAreDerivedFromCanvasArrangement()
 
   // server: A|B on the top row, C directly below B (L-shape, all 1920x1080)
   Screen server("server");
-  server.setMonitors({QRect(0, 0, 1920, 1080), QRect(1920, 0, 1920, 1080), QRect(1920, 1080, 1920, 1080)});
+  server.setMonitors({
+      MonitorTile{QRect(0, 0, 1920, 1080), {}}, MonitorTile{QRect(1920, 0, 1920, 1080), {}},
+      MonitorTile{QRect(1920, 1080, 1920, 1080), {}}
+  });
   server.setCanvasPos(QPoint(0, 0));
   config.addScreen(server);
 
   // D: a single 1920x1080 monitor, positioned below A / left of C -- the
   // same L-shape scenario proven correct by MonitorLayoutLinksTests
   Screen d("D");
-  d.setMonitors({QRect(0, 0, 1920, 1080)});
+  d.setMonitors({MonitorTile{QRect(0, 0, 1920, 1080), {}}});
   d.setCanvasPos(QPoint(0, 1080));
   config.addScreen(d);
 
@@ -56,7 +59,7 @@ void GuiServerConfigTests::screenWithoutMonitors_fallsBackToFullBoxLink()
   ServerConfig config;
 
   Screen server("server2");
-  server.setMonitors({QRect(0, 0, 1920, 1080)});
+  server.setMonitors({MonitorTile{QRect(0, 0, 1920, 1080), {}}});
   server.setCanvasPos(QPoint(0, 0));
   config.addScreen(server);
 

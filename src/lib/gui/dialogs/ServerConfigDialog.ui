@@ -45,6 +45,19 @@
           <number>6</number>
          </property>
          <item>
+          <widget class="QLabel" name="lblRemoveScreen">
+           <property name="toolTip">
+            <string>Drag a computer here to remove it.</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Shadow::Raised</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_21">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
@@ -72,7 +85,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Drag each computer's monitors to arrange them. Double-click to edit a computer's settings, or right-click (or press Delete) to remove it.</string>
+            <string>Drag each computer's monitors to arrange them. Double-click to edit a computer's settings, or drag it onto the trash can (or press Delete) to remove it.</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignCenter</set>

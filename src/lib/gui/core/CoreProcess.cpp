@@ -576,8 +576,9 @@ void CoreProcess::onCoreIpcMessageReceived(const QString &command, const QString
     const auto clients = args.isEmpty() ? QStringList() : args.split(",");
     Q_EMIT connectedClientsChanged(clients);
   } else if (command == "clientMonitors") {
-    // format: "<screen>:x,y,w,h;x,y,w,h|<screen>:x,y,w,h|..."
-    QMap<QString, QList<QRect>> monitors;
+    // format: "<screen>:x,y,w,h,name;x,y,w,h,name|<screen>:x,y,w,h,name|..."
+    // name is percent-encoded (see Server::sendClientMonitorsIpc).
+    QMap<QString, QList<MonitorTile>> monitors;
     const auto entries = args.isEmpty() ? QStringList() : args.split("|");
     for (const auto &entry : entries) {
       const int colon = entry.indexOf(':');
@@ -586,16 +587,22 @@ void CoreProcess::onCoreIpcMessageReceived(const QString &command, const QString
       }
       const QString name = entry.left(colon);
       const QString rectList = entry.mid(colon + 1);
-      QList<QRect> rects;
+      QList<MonitorTile> tiles;
       const auto rectStrings = rectList.isEmpty() ? QStringList() : rectList.split(";");
       for (const auto &rectString : rectStrings) {
         const auto parts = rectString.split(",");
-        if (parts.size() != 4) {
+        if (parts.size() != 5) {
           continue;
         }
-        rects.append(QRect(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), parts[3].toInt()));
+        QString monitorName = parts[4];
+        monitorName.replace("%3A", ":").replace("%7C", "|").replace("%3B", ";").replace("%2C", ",").replace(
+            "%25", "%"
+        );
+        tiles.append(
+            MonitorTile{QRect(parts[0].toInt(), parts[1].toInt(), parts[2].toInt(), parts[3].toInt()), monitorName}
+        );
       }
-      monitors.insert(name, rects);
+      monitors.insert(name, tiles);
     }
     Q_EMIT clientMonitorsChanged(monitors);
   } else if (command == "secureSocket") {

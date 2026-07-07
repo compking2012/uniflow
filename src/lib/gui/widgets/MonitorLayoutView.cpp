@@ -7,6 +7,7 @@
 #include "MonitorLayoutView.h"
 
 #include "dialogs/ScreenSettingsDialog.h"
+#include "gui/SystemSettings.h"
 
 #include <QBrush>
 #include <QContextMenuEvent>
@@ -14,15 +15,21 @@
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QGraphicsDropShadowEffect>
 #include <QGraphicsItemGroup>
-#include <QGraphicsRectItem>
-#include <QGraphicsScene>
+#include <QGraphicsPathItem>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSimpleTextItem>
+#include <QIcon>
 #include <QKeyEvent>
+#include <QLabel>
 #include <QMenu>
+#include <QMessageBox>
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPen>
 #include <QResizeEvent>
 #include <cmath>
@@ -34,10 +41,13 @@ const QString MonitorLayoutView::m_MimeType = "application/x-deskflow-screen";
 namespace {
 
 constexpr double kSnapDistance = 80.0; // scene pixels within which edges snap
+constexpr int kTileCornerRadius = 10;
+constexpr int kGridStep = 40;
 
 //! A movable group of one machine's monitors that snaps its edges to the
 //! monitors of other machines while being dragged, and reports its screen
-//! name back to the owning view.
+//! name back to the owning view.  Dropping the group onto the owning view's
+//! trash widget deletes the machine.
 class MonitorGroupItem : public QGraphicsItemGroup
 {
 public:
@@ -47,6 +57,21 @@ public:
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setHandlesChildEvents(true);
+  }
+
+  //! The default QGraphicsItemGroup::shape() is just the rectangular
+  //! boundingRect(), which for an L-shaped arrangement of tiles would
+  //! include the empty corner.  Hit-testing (context menu, double-click,
+  //! and Qt's own itemAt()) must only consider the tiles actually drawn, so
+  //! another machine's tiles can be moved into that empty corner instead of
+  //! being blocked by this group's bounding box.
+  QPainterPath shape() const override
+  {
+    QPainterPath path;
+    for (const QGraphicsItem *child : childItems()) {
+      path.addPath(mapFromItem(child, child->shape()));
+    }
+    return path;
   }
 
 protected:
@@ -61,6 +86,22 @@ protected:
     return QGraphicsItemGroup::itemChange(change, value);
   }
 
+  void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override
+  {
+    QGraphicsItemGroup::mouseMoveEvent(event);
+    m_view->updateTrashHover(event->screenPos());
+  }
+
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override
+  {
+    QGraphicsItemGroup::mouseReleaseEvent(event);
+    const bool droppedOnTrash = m_view->isOverTrash(event->screenPos());
+    m_view->clearTrashHover();
+    if (droppedOnTrash) {
+      m_view->removeScreen(m_screenName);
+    }
+  }
+
 private:
   MonitorLayoutView *m_view;
   QString m_screenName;
@@ -69,8 +110,8 @@ private:
 QColor machineColor(const QString &name)
 {
   static const QList<QColor> palette = {
-      QColor(64, 128, 200, 160), QColor(80, 180, 120, 160), QColor(200, 140, 60, 160),
-      QColor(160, 100, 200, 160), QColor(200, 90, 110, 160), QColor(90, 170, 190, 160)
+      QColor(84, 138, 201, 220), QColor(90, 176, 137, 220), QColor(214, 154, 68, 220),
+      QColor(158, 116, 200, 220), QColor(206, 105, 120, 220), QColor(94, 168, 186, 220)
   };
   return palette[static_cast<uint>(qHash(name)) % static_cast<uint>(palette.size())];
 }
@@ -82,6 +123,44 @@ QGraphicsItem *topLevelItem(QGraphicsItem *item)
     item = item->parentItem();
   }
   return item;
+}
+
+//! union of a list of tile rects, or a null rect if empty
+QRect unionOfTiles(const QList<MonitorTile> &tiles)
+{
+  QRect box;
+  for (const auto &tile : tiles) {
+    box = box.isNull() ? tile.rect : box.united(tile.rect);
+  }
+  return box;
+}
+
+//! Adds a rounded-corner "pill" tag naming the machine, anchored just above
+//! the top-left of its monitors' union box.
+void addComputerTag(QGraphicsItemGroup *group, const QString &name, const QRect &unionBox, const QColor &color)
+{
+  auto *label = new QGraphicsSimpleTextItem(name);
+  QFont font = label->font();
+  font.setBold(true);
+  label->setFont(font);
+  label->setBrush(Qt::white);
+
+  const QRectF textBounds = label->boundingRect();
+  const qreal pillW = textBounds.width() + 28;
+  const qreal pillH = textBounds.height() + 10;
+  const QPointF pillPos(unionBox.left(), unionBox.top() - pillH - 8);
+
+  auto *pill = new QGraphicsPathItem;
+  QPainterPath path;
+  path.addRoundedRect(QRectF(pillPos, QSizeF(pillW, pillH)), pillH / 2.0, pillH / 2.0);
+  pill->setPath(path);
+  pill->setBrush(QBrush(color.darker(115)));
+  pill->setPen(Qt::NoPen);
+
+  label->setParentItem(pill);
+  label->setPos(pillPos.x() + 14, pillPos.y() + (pillH - textBounds.height()) / 2.0 - 1);
+
+  group->addToGroup(pill);
 }
 
 } // namespace
@@ -102,29 +181,69 @@ void MonitorLayoutView::setScreenList(ScreenList *screens)
   rebuild();
 }
 
+void MonitorLayoutView::setTrashWidget(QLabel *trash)
+{
+  m_trashWidget = trash;
+}
+
 void MonitorLayoutView::addGroupFor(const Screen &screen)
 {
   auto *group = new MonitorGroupItem(this, screen.name());
   m_scene->addItem(group);
 
-  QList<QRect> rects = screen.monitors();
-  if (rects.isEmpty()) {
-    rects = {QRect(0, 0, 1920, 1080)};
+  QList<MonitorTile> tiles = screen.monitors();
+  if (tiles.isEmpty()) {
+    tiles = {MonitorTile{QRect(0, 0, 1920, 1080), {}}};
   }
 
-  for (int m = 0; m < rects.size(); ++m) {
-    auto *rectItem = new QGraphicsRectItem(QRectF(rects[m]));
-    rectItem->setBrush(QBrush(machineColor(screen.name())));
-    rectItem->setPen(QPen(Qt::black, 2));
+  const QColor color = machineColor(screen.name());
 
-    auto *label = new QGraphicsSimpleTextItem(
-        rects.size() > 1 ? QStringLiteral("%1 #%2").arg(screen.name()).arg(m + 1) : screen.name()
-    );
-    label->setParentItem(rectItem);
-    label->setPos(rects[m].x() + 8, rects[m].y() + 8);
+  for (int m = 0; m < tiles.size(); ++m) {
+    const QRect &r = tiles[m].rect;
 
-    group->addToGroup(rectItem);
+    auto *tileItem = new QGraphicsPathItem;
+    QPainterPath path;
+    path.addRoundedRect(QRectF(r), kTileCornerRadius, kTileCornerRadius);
+    tileItem->setPath(path);
+    tileItem->setBrush(QBrush(color));
+    tileItem->setPen(QPen(color.darker(140), 2));
+
+    auto *shadow = new QGraphicsDropShadowEffect;
+    shadow->setBlurRadius(18);
+    shadow->setOffset(0, 3);
+    shadow->setColor(QColor(0, 0, 0, 90));
+    tileItem->setGraphicsEffect(shadow);
+
+    // Tiles are laid out in real monitor-pixel scene units (e.g. ~1920x1080),
+    // and the whole scene is then scaled down via fitInView() to fit the
+    // dialog. A fixed pixel size here would shrink to imperceptible once
+    // fitInView applies its scale factor, so size everything as a generous
+    // fraction of the tile itself instead, and treat the icon+label as a
+    // single block that is centered (both axes) in the tile as a unit.
+    const int iconSize = qBound(120, static_cast<int>(qMin(r.width(), r.height()) * 0.4), 420);
+    const QPixmap iconPixmap = QIcon::fromTheme("video-display").pixmap(QSize(iconSize, iconSize));
+
+    const QString monitorName = tiles[m].name.isEmpty() ? tr("Monitor %1").arg(m + 1) : tiles[m].name;
+    auto *label = new QGraphicsSimpleTextItem(monitorName, tileItem);
+    label->setBrush(Qt::white);
+    QFont labelFont = label->font();
+    labelFont.setPixelSize(qBound(24, static_cast<int>(iconSize * 0.42), 64));
+    labelFont.setBold(true);
+    label->setFont(labelFont);
+    const QRectF labelBounds = label->boundingRect();
+
+    const double gap = iconSize * 0.15;
+    const double blockHeight = iconPixmap.height() + gap + labelBounds.height();
+    const double blockTop = r.center().y() - blockHeight / 2.0;
+
+    auto *icon = new QGraphicsPixmapItem(iconPixmap, tileItem);
+    icon->setPos(r.center().x() - iconPixmap.width() / 2.0, blockTop);
+    label->setPos(r.center().x() - labelBounds.width() / 2.0, blockTop + iconPixmap.height() + gap);
+
+    group->addToGroup(tileItem);
   }
+
+  addComputerTag(group, screen.name(), unionOfTiles(tiles), color);
 
   group->setPos(screen.canvasPos());
   m_groups.insert(screen.name(), group);
@@ -149,10 +268,10 @@ void MonitorLayoutView::rebuild()
   m_scene->setSceneRect(bounds.isEmpty() ? QRectF(-200, -200, 2000, 1400) : bounds);
 }
 
-void MonitorLayoutView::refreshMonitors(const QString &name, const QList<QRect> &rects)
+void MonitorLayoutView::refreshMonitors(const QString &name, const QList<MonitorTile> &tiles)
 {
   if (Screen *s = findScreen(name)) {
-    s->setMonitors(rects);
+    s->setMonitors(tiles);
   }
   // a full rebuild re-renders every group at its current (unchanged)
   // canvasPos, so the arrangement in progress is preserved
@@ -232,6 +351,64 @@ void MonitorLayoutView::commitGroupPosition(const QString &name, const QPointF &
   Q_EMIT screensChanged();
 }
 
+bool MonitorLayoutView::isOverTrash(const QPoint &globalPos) const
+{
+  if (m_trashWidget == nullptr) {
+    return false;
+  }
+  const QRect globalRect(m_trashWidget->mapToGlobal(QPoint(0, 0)), m_trashWidget->size());
+  return globalRect.contains(globalPos);
+}
+
+void MonitorLayoutView::updateTrashHover(const QPoint &globalPos)
+{
+  if (m_trashWidget == nullptr) {
+    return;
+  }
+  const bool over = isOverTrash(globalPos);
+  if (over == m_trashArmed) {
+    return;
+  }
+  m_trashArmed = over;
+  m_trashWidget->setStyleSheet(
+      over ? QStringLiteral(
+                 "QLabel { border: 2px solid #e74c3c; border-radius: 8px; background-color: rgba(231,76,60,40); }"
+             )
+           : QString()
+  );
+}
+
+void MonitorLayoutView::clearTrashHover()
+{
+  if (m_trashWidget != nullptr) {
+    m_trashArmed = false;
+    m_trashWidget->setStyleSheet(QString());
+  }
+}
+
+void MonitorLayoutView::removeScreen(const QString &name)
+{
+  if (m_screens == nullptr) {
+    return;
+  }
+  for (int i = 0; i < m_screens->size(); ++i) {
+    if ((*m_screens)[i].name() == name) {
+      if ((*m_screens)[i].isServer()) {
+        // removing the server's own computer would leave the config
+        // without a server at all
+        QMessageBox::information(
+            this, tr("Remove Computer"), tr("The server's own computer can't be removed.")
+        );
+        return;
+      }
+      m_screens->removeAt(i);
+      break;
+    }
+  }
+  rebuild();
+  Q_EMIT screensChanged();
+}
+
 QString MonitorLayoutView::groupNameAt(const QPoint &viewportPos) const
 {
   QGraphicsItem *item = itemAt(viewportPos);
@@ -271,10 +448,26 @@ void MonitorLayoutView::contextMenuEvent(QContextMenuEvent *event)
     return;
   }
 
+  Screen *screen = findScreen(name);
+
   QMenu menu(this);
+  QAction *openSettingsAction = nullptr;
+  if (screen != nullptr && screen->isServer()) {
+    openSettingsAction = menu.addAction(tr("Open Display Settings..."));
+    menu.addSeparator();
+  }
   QAction *removeAction = menu.addAction(tr("Remove Computer"));
-  if (menu.exec(event->globalPos()) == removeAction) {
+
+  QAction *chosen = menu.exec(event->globalPos());
+  if (chosen == removeAction) {
     removeScreen(name);
+  } else if (chosen == openSettingsAction) {
+    if (!deskflow::gui::openDisplaySettings()) {
+      QMessageBox::information(
+          this, tr("Open Display Settings"),
+          tr("Couldn't find a way to open display settings on this system. Please open it manually.")
+      );
+    }
   }
 }
 
@@ -293,21 +486,6 @@ void MonitorLayoutView::keyPressEvent(QKeyEvent *event)
     }
   }
   QGraphicsView::keyPressEvent(event);
-}
-
-void MonitorLayoutView::removeScreen(const QString &name)
-{
-  if (m_screens == nullptr) {
-    return;
-  }
-  for (int i = 0; i < m_screens->size(); ++i) {
-    if ((*m_screens)[i].name() == name) {
-      m_screens->removeAt(i);
-      break;
-    }
-  }
-  rebuild();
-  Q_EMIT screensChanged();
 }
 
 void MonitorLayoutView::dragEnterEvent(QDragEnterEvent *event)
@@ -360,6 +538,20 @@ void MonitorLayoutView::resizeEvent(QResizeEvent *event)
   QGraphicsView::resizeEvent(event);
   if (m_scene != nullptr && !m_scene->sceneRect().isEmpty()) {
     fitInView(m_scene->sceneRect(), Qt::KeepAspectRatio);
+  }
+}
+
+void MonitorLayoutView::drawBackground(QPainter *painter, const QRectF &rect)
+{
+  painter->fillRect(rect, QColor(248, 249, 251));
+
+  painter->setPen(QPen(QColor(222, 224, 230), 1));
+  const int left = static_cast<int>(std::floor(rect.left() / kGridStep)) * kGridStep;
+  const int top = static_cast<int>(std::floor(rect.top() / kGridStep)) * kGridStep;
+  for (int x = left; x < rect.right(); x += kGridStep) {
+    for (int y = top; y < rect.bottom(); y += kGridStep) {
+      painter->drawPoint(x, y);
+    }
   }
 }
 

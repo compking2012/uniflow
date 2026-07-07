@@ -11,6 +11,7 @@
 #include "deskflow/ClipboardTypes.h"
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 class IClipboard;
@@ -27,6 +28,12 @@ struct MonitorInfo
   int32_t y = 0;
   int32_t w = 0;
   int32_t h = 0;
+
+  //! The monitor's human-readable name, as shown in the OS's own display
+  //! settings (e.g. "Built-in Retina Display", "DELL U2720Q", "HDMI-1").
+  //! Empty when the platform couldn't determine one, or when reported by a
+  //! peer that predates this field.
+  std::string name;
 };
 
 //! Screen interface
