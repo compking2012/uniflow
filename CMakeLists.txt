@@ -167,6 +167,11 @@ endif()
 
 # setup install paths
 include(GNUInstallDirs)
+option(BUILD_TESTS "Build tests" ON)
+if(BUILD_TESTS)
+  enable_testing()
+endif()
+
 if (WIN32)
   set(CMAKE_INSTALL_BINDIR .)
   set(CMAKE_INSTALL_LIBDIR .)
