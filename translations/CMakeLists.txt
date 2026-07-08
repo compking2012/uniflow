@@ -19,8 +19,8 @@ if(CLEAN_TRS)
   list(APPEND TR_OPTIONS -no-obsolete)
 endif()
 
-# English will have only plurals
-qt_create_translation(TRS ${CMAKE_SOURCE_DIR}/src ${CMAKE_PROJECT_NAME}_en.ts OPTIONS -pluralonly ${TR_OPTIONS})
+# English contains the full source-string set so it stays aligned with other languages.
+qt_create_translation(TRS ${CMAKE_SOURCE_DIR}/src ${CMAKE_PROJECT_NAME}_en.ts OPTIONS ${TR_OPTIONS})
 
 # Other languages contain the full set of strings.
 qt_create_translation(TRS ${CMAKE_SOURCE_DIR}/src ${${CMAKE_PROJECT_NAME}_TRS} OPTIONS ${TR_OPTIONS})

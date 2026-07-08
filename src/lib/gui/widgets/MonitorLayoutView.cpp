@@ -14,6 +14,7 @@
 #include <QDataStream>
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
+#include <QFontMetricsF>
 #include <QDropEvent>
 #include <QGraphicsDropShadowEffect>
 #include <QGraphicsItemGroup>
@@ -43,6 +44,7 @@ namespace {
 constexpr double kSnapDistance = 80.0; // scene pixels within which edges snap
 constexpr int kTileCornerRadius = 10;
 constexpr int kGridStep = 40;
+constexpr double kTilePaddingRatio = 0.06;
 
 //! A movable group of one machine's monitors that snaps its edges to the
 //! monitors of other machines while being dragged, and reports its screen
@@ -125,45 +127,91 @@ QGraphicsItem *topLevelItem(QGraphicsItem *item)
   return item;
 }
 
-//! union of a list of tile rects, or a null rect if empty
-QRect unionOfTiles(const QList<MonitorTile> &tiles)
+void setTextFont(QGraphicsSimpleTextItem *item, int pixelSize, bool bold)
 {
-  QRect box;
-  for (const auto &tile : tiles) {
-    box = box.isNull() ? tile.rect : box.united(tile.rect);
-  }
-  return box;
+  QFont font = item->font();
+  font.setPixelSize(qMax(1, pixelSize));
+  font.setBold(bold);
+  item->setFont(font);
 }
 
-//! Adds a rounded-corner "pill" tag naming the machine, anchored just above
-//! the top-left of its monitors' union box. `refSize` is a representative
-//! monitor-tile dimension (scene units) used to scale the tag proportionally
-//! to the same zoom level as the per-tile icons/labels.
-void addComputerTag(QGraphicsItemGroup *group, const QString &name, const QRect &unionBox, const QColor &color, int refSize)
+QRectF fitTextToBounds(QGraphicsSimpleTextItem *item, int desiredPixelSize, const QSizeF &maxSize, bool bold)
 {
+  const QString fullText = item->text();
+  for (int pixelSize = qMax(1, desiredPixelSize); pixelSize > 1; --pixelSize) {
+    item->setText(fullText);
+    setTextFont(item, pixelSize, bold);
+    const QRectF bounds = item->boundingRect();
+    if (bounds.width() <= maxSize.width() && bounds.height() <= maxSize.height()) {
+      return bounds;
+    }
+  }
+
+  setTextFont(item, 1, bold);
+  QFontMetricsF metrics(item->font());
+  item->setText(metrics.elidedText(fullText, Qt::ElideRight, maxSize.width()));
+  return item->boundingRect();
+}
+
+QRectF paddedRect(const QRect &rect)
+{
+  const double minSide = qMin(rect.width(), rect.height());
+  const double padding = qMax(2.0, minSide * kTilePaddingRatio);
+  QRectF content = QRectF(rect).adjusted(padding, padding, -padding, -padding);
+  if (content.width() <= 1.0 || content.height() <= 1.0) {
+    return QRectF(rect);
+  }
+  return content;
+}
+
+QRect topLeftTile(const QList<MonitorTile> &tiles)
+{
+  QRect topLeft;
+  for (const auto &tile : tiles) {
+    if (topLeft.isNull() || tile.rect.top() < topLeft.top() ||
+        (tile.rect.top() == topLeft.top() && tile.rect.left() < topLeft.left())) {
+      topLeft = tile.rect;
+    }
+  }
+  return topLeft;
+}
+
+//! Adds a rounded-corner tag naming the machine inside the top-left monitor
+//! tile so it remains attached to the visible screen rectangle at every zoom.
+void addComputerTag(QGraphicsItemGroup *group, const QString &name, const QList<MonitorTile> &tiles, const QColor &color)
+{
+  const QRect anchorTile = topLeftTile(tiles);
+  if (anchorTile.isNull()) {
+    return;
+  }
+
+  const QRectF content = paddedRect(anchorTile);
+  const double minSide = qMin(anchorTile.width(), anchorTile.height());
+
   auto *label = new QGraphicsSimpleTextItem(name);
-  QFont font = label->font();
-  font.setPixelSize(qBound(48, static_cast<int>(refSize * 0.09), 120));
-  font.setBold(true);
-  label->setFont(font);
   label->setBrush(Qt::white);
 
-  const QRectF textBounds = label->boundingRect();
+  const int desiredFontSize = qMin(120, qMax(1, static_cast<int>(minSide * 0.09)));
+  const QRectF textBounds = fitTextToBounds(
+      label, desiredFontSize, QSizeF(qMax(1.0, content.width() * 0.72), qMax(1.0, content.height() * 0.18)),
+      true
+  );
   const qreal pillPadX = textBounds.height() * 0.7;
   const qreal pillPadY = textBounds.height() * 0.35;
   const qreal pillW = textBounds.width() + pillPadX * 2;
   const qreal pillH = textBounds.height() + pillPadY * 2;
-  const QPointF pillPos(unionBox.left(), unionBox.top() - pillH - refSize * 0.03);
 
   auto *pill = new QGraphicsPathItem;
   QPainterPath path;
-  path.addRoundedRect(QRectF(pillPos, QSizeF(pillW, pillH)), pillH / 2.0, pillH / 2.0);
+  path.addRoundedRect(QRectF(QPointF(0, 0), QSizeF(pillW, pillH)), pillH / 2.0, pillH / 2.0);
   pill->setPath(path);
   pill->setBrush(QBrush(color.darker(115)));
   pill->setPen(Qt::NoPen);
+  pill->setPos(content.topLeft());
+  pill->setZValue(1);
 
   label->setParentItem(pill);
-  label->setPos(pillPos.x() + pillPadX, pillPos.y() + (pillH - textBounds.height()) / 2.0 - 1);
+  label->setPos(pillPadX - textBounds.left(), (pillH - textBounds.height()) / 2.0 - textBounds.top());
 
   group->addToGroup(pill);
 }
@@ -202,10 +250,11 @@ void MonitorLayoutView::addGroupFor(const Screen &screen)
   }
 
   const QColor color = machineColor(screen.name());
-  int computerTagRefSize = 1080;
 
   for (int m = 0; m < tiles.size(); ++m) {
     const QRect &r = tiles[m].rect;
+    const QRectF content = paddedRect(r);
+    const double minSide = qMin(r.width(), r.height());
 
     auto *tileItem = new QGraphicsPathItem;
     QPainterPath path;
@@ -220,22 +269,31 @@ void MonitorLayoutView::addGroupFor(const Screen &screen)
     shadow->setColor(QColor(0, 0, 0, 90));
     tileItem->setGraphicsEffect(shadow);
 
-    // Tiles are laid out in real monitor-pixel scene units (e.g. ~1920x1080),
-    // and the whole scene is then scaled down via fitInView() to fit the
-    // dialog. A fixed pixel size here would shrink to imperceptible once
-    // fitInView applies its scale factor, so size everything as a generous
-    // fraction of the tile itself instead.
-    const int iconSize = qBound(200, static_cast<int>(qMin(r.width(), r.height()) * 0.5), 560);
-    if (m == 0) {
-      computerTagRefSize = qMin(r.width(), r.height());
-    }
+    const QString monitorName = tiles[m].name.isEmpty() ? tr("Monitor %1").arg(m + 1) : tiles[m].name;
+    auto *label = new QGraphicsSimpleTextItem(monitorName, tileItem);
+    label->setBrush(Qt::white);
+    const int desiredLabelSize = qMin(130, qMax(1, static_cast<int>(minSide * 0.11)));
+    const QRectF labelBounds = fitTextToBounds(
+        label, desiredLabelSize, QSizeF(qMax(1.0, content.width()), qMax(1.0, content.height() * 0.24)), true
+    );
+
+    // Tiles are in real monitor-pixel scene units, then the whole scene is
+    // scaled by fitInView(). Size the icon/caption as a bounded fraction of
+    // the tile, and compute the icon from the remaining vertical space so the
+    // combined block never leaves the rectangle.
+    const double gap = qMax(1.0, minSide * 0.025);
+    const double maxIconHeight = qMax(1.0, content.height() - labelBounds.height() - gap);
+    const int iconSize = qMax(
+        1,
+        static_cast<int>(qMin(qMin(content.width(), maxIconHeight), minSide * 0.38))
+    );
 
     // QIcon::fromTheme() caps out at the largest raster asset the icon theme
     // actually ships (often 64px) and silently refuses to upscale beyond
     // that, so requesting a bigger QSize from pixmap() alone has no visible
     // effect. Force an explicit smooth upscale to the size we actually want.
     QPixmap iconPixmap = QIcon::fromTheme("video-display").pixmap(QSize(iconSize, iconSize));
-    if (iconPixmap.width() < iconSize || iconPixmap.height() < iconSize) {
+    if (!iconPixmap.isNull() && (iconPixmap.width() < iconSize || iconPixmap.height() < iconSize)) {
       iconPixmap = iconPixmap.scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
     // QIcon::pixmap() on HiDPI screens tags the pixmap with a devicePixelRatio
@@ -245,28 +303,24 @@ void MonitorLayoutView::addGroupFor(const Screen &screen)
     // iconSize exactly, or all the sizing above would render ~1/DPR too small.
     iconPixmap.setDevicePixelRatio(1.0);
 
-    const QString monitorName = tiles[m].name.isEmpty() ? tr("Monitor %1").arg(m + 1) : tiles[m].name;
-    auto *label = new QGraphicsSimpleTextItem(monitorName, tileItem);
-    label->setBrush(Qt::white);
-    QFont labelFont = label->font();
-    labelFont.setPixelSize(qBound(56, static_cast<int>(iconSize * 0.55), 130));
-    labelFont.setBold(true);
-    label->setFont(labelFont);
-    const QRectF labelBounds = label->boundingRect();
+    const double iconWidth = iconPixmap.width();
+    const double iconHeight = iconPixmap.height();
+    const double combinedHeight = iconHeight > 0 ? iconHeight + gap + labelBounds.height() : labelBounds.height();
+    const double blockTop = content.top() + (content.height() - combinedHeight) / 2.0;
 
-    // Icon sits dead-center in the tile; the name label hugs directly below
-    // the icon's bottom edge (not centered as a combined block), matching a
-    // conventional "icon above caption" layout.
-    const double gap = iconSize * 0.05;
-
-    auto *icon = new QGraphicsPixmapItem(iconPixmap, tileItem);
-    icon->setPos(r.center().x() - iconPixmap.width() / 2.0, r.center().y() - iconPixmap.height() / 2.0);
-    label->setPos(r.center().x() - labelBounds.width() / 2.0, r.center().y() + iconPixmap.height() / 2.0 + gap);
+    if (!iconPixmap.isNull()) {
+      auto *icon = new QGraphicsPixmapItem(iconPixmap, tileItem);
+      icon->setPos(content.left() + (content.width() - iconWidth) / 2.0, blockTop);
+    }
+    label->setPos(
+        content.left() + (content.width() - labelBounds.width()) / 2.0 - labelBounds.left(),
+        blockTop + (iconHeight > 0 ? iconHeight + gap : 0) - labelBounds.top()
+    );
 
     group->addToGroup(tileItem);
   }
 
-  addComputerTag(group, screen.name(), unionOfTiles(tiles), color, computerTagRefSize);
+  addComputerTag(group, screen.name(), tiles, color);
 
   group->setPos(screen.canvasPos());
   m_groups.insert(screen.name(), group);
