@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Chris Rizzitello <sithlord48@gmail.com>
  * SPDX-FileCopyrightText: (C) 2015 - 2016 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
@@ -7,9 +7,9 @@
 
 #include "ClipboardChunksTests.h"
 
-#include "deskflow/ClipboardChunk.h"
-#include "deskflow/ProtocolTypes.h"
-#include "deskflow/ProtocolUtil.h"
+#include "uniflow/ClipboardChunk.h"
+#include "uniflow/ProtocolTypes.h"
+#include "uniflow/ProtocolUtil.h"
 #include "io/IStream.h"
 
 #include <algorithm>

@@ -1,13 +1,13 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2026 Red Hat, Inc.
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
 #pragma once
 
-#include "deskflow/ClipboardTypes.h"
-#include "deskflow/IClipboard.h"
+#include "uniflow/ClipboardTypes.h"
+#include "uniflow/IClipboard.h"
 #include <mutex>
 
 namespace deskflow {

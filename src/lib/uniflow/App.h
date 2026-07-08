@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2026 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -11,13 +11,13 @@
 #include "base/EventQueue.h"
 #include "base/Log.h"
 #include "common/ExitCodes.h"
-#include "deskflow/IApp.h"
+#include "uniflow/IApp.h"
 #include "net/SocketMultiplexer.h"
 
 #if defined(Q_OS_WIN)
-#include "deskflow/win32/AppUtilWindows.h"
+#include "uniflow/win32/AppUtilWindows.h"
 #else
-#include "deskflow/unix/AppUtilUnix.h"
+#include "uniflow/unix/AppUtilUnix.h"
 #endif
 
 #include <QObject>

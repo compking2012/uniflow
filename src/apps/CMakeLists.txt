@@ -47,6 +47,6 @@ if(WIN32)
   endif()
 endif()
 
-add_subdirectory(deskflow-core)
-add_subdirectory(deskflow-daemon) #Only used on windows
-add_subdirectory(deskflow-gui)
+add_subdirectory(uniflow-core)
+add_subdirectory(uniflow-daemon) #Only used on windows
+add_subdirectory(uniflow-gui)

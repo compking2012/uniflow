@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 - 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2003 Chris Schoeneman
@@ -10,7 +10,7 @@
 
 #include "common/Coordinate.h"
 #include "common/Settings.h"
-#include "deskflow/MouseTypes.h"
+#include "uniflow/MouseTypes.h"
 
 //! Secondary screen interface
 /*!

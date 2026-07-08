@@ -1,10 +1,10 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2015 - 2016 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/Chunk.h"
+#include "uniflow/Chunk.h"
 
 Chunk::Chunk(size_t size) : m_chunk{new char[size]}
 {

@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -10,8 +10,8 @@
 
 #include "base/BaseException.h"
 #include "base/String.h"
-#include "deskflow/IPlatformScreen.h"
-#include "deskflow/OptionTypes.h"
+#include "uniflow/IPlatformScreen.h"
+#include "uniflow/OptionTypes.h"
 #include "net/NetworkAddress.h"
 #include "server/InputFilter.h"
 

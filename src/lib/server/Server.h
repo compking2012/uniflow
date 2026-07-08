@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -11,10 +11,10 @@
 #include "base/Event.h"
 #include "base/Stopwatch.h"
 #include "common/NetworkProtocol.h"
-#include "deskflow/Clipboard.h"
-#include "deskflow/ClipboardTypes.h"
-#include "deskflow/KeyTypes.h"
-#include "deskflow/MouseTypes.h"
+#include "uniflow/Clipboard.h"
+#include "uniflow/ClipboardTypes.h"
+#include "uniflow/KeyTypes.h"
+#include "uniflow/MouseTypes.h"
 #include "server/Config.h"
 
 #include <climits>

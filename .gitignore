@@ -16,7 +16,7 @@ aqtinstall.log
 Brewfile.lock.json
 
 # typical developer-created files
-deskflow-config.toml
+uniflow-config.toml
 .vscode
 .DS_Store
 *.code-workspace

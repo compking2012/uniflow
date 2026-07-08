@@ -1,12 +1,12 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 - 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/ServerApp.h"
+#include "uniflow/ServerApp.h"
 
 #include "arch/Arch.h"
 #include "base/IEventQueue.h"
@@ -14,11 +14,11 @@
 #include "common/ExitCodes.h"
 #include "common/PlatformInfo.h"
 #include "common/Settings.h"
-#include "deskflow/App.h"
-#include "deskflow/ProtocolTypes.h"
-#include "deskflow/Screen.h"
-#include "deskflow/ScreenException.h"
-#include "deskflow/ipc/CoreIpc.h"
+#include "uniflow/App.h"
+#include "uniflow/ProtocolTypes.h"
+#include "uniflow/Screen.h"
+#include "uniflow/ScreenException.h"
+#include "uniflow/ipc/CoreIpc.h"
 #include "net/SocketException.h"
 #include "net/SocketMultiplexer.h"
 #include "net/TCPSocketFactory.h"
@@ -581,8 +581,8 @@ int ServerApp::start()
 const char *ServerApp::daemonName() const
 {
   if (deskflow::platform::isWindows())
-    return "Deskflow Server";
-  return "deskflow-server";
+    return "Uniflow Server";
+  return "uniflow-server";
 }
 
 void ServerApp::startNode()

@@ -1,11 +1,11 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2012 - 2026 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/App.h"
+#include "uniflow/App.h"
 
 #include "DisplayInvalidException.h"
 #include "arch/Arch.h"
@@ -13,7 +13,7 @@
 #include "base/LogOutputters.h"
 #include "common/ExitCodes.h"
 #include "common/Settings.h"
-#include "deskflow/DeskflowException.h"
+#include "uniflow/UniflowException.h"
 #include "mt/ThreadException.h"
 
 #if defined(Q_OS_WIN)

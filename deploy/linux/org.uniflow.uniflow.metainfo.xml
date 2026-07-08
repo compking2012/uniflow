@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>org.deskflow.deskflow</id>
+	<id>org.uniflow.uniflow</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-2.0-only</project_license>
-	<name>Deskflow</name>
-	<developer id="org.deskflow">
-		<name>Deskflow Developers</name>
+	<name>Uniflow</name>
+	<developer id="org.uniflow">
+		<name>Uniflow Developers</name>
 	</developer>
 	<summary>Software Keyboard and mouse sharing</summary>
 	<summary xml:lang="zh_CN">用软件共享键鼠</summary>
@@ -21,40 +21,40 @@
 			한 대의 컴퓨터에 연결된 키보드, 마우스 또는 트랙패드로 주변의 다른 컴퓨터를 제어하고, 컴퓨터 사이를 끊김 없이 오가며 작업할 수 있습니다.
 		</p>
 	</description>
-	<launchable type="desktop-id">org.deskflow.deskflow.desktop</launchable>
-	<url type="homepage">https://deskflow.org</url>
-	<url type="bugtracker">https://github.com/deskflow/deskflow/issues</url>
-	<url type="faq">https://github.com/deskflow/deskflow/wiki/Project-FAQ</url>
-	<url type="help">https://github.com/deskflow/deskflow/wiki#user-guides</url>
-	<url type="vcs-browser">https://github.com/deskflow/deskflow</url>
-	<url type="contribute">https://github.com/deskflow/deskflow/wiki/Contributing</url>
+	<launchable type="desktop-id">org.uniflow.uniflow.desktop</launchable>
+	<url type="homepage">https://uniflow.org</url>
+	<url type="bugtracker">https://github.com/uniflow/uniflow/issues</url>
+	<url type="faq">https://github.com/uniflow/uniflow/wiki/Project-FAQ</url>
+	<url type="help">https://github.com/uniflow/uniflow/wiki#user-guides</url>
+	<url type="vcs-browser">https://github.com/uniflow/uniflow</url>
+	<url type="contribute">https://github.com/uniflow/uniflow/wiki/Contributing</url>
 	<screenshots>
 		<screenshot type="default">
-			<image>https://deskflow.org/screenshots/deskflow-client.png</image>
-			<caption>Deskflow in client mode on KDE</caption>
+			<image>https://uniflow.org/screenshots/uniflow-client.png</image>
+			<caption>Uniflow in client mode on KDE</caption>
 		</screenshot>
 		<screenshot>
-			<image>https://deskflow.org/screenshots/deskflow-server.png</image>
-			<caption>Deskflow in server mode on KDE</caption>
+			<image>https://uniflow.org/screenshots/uniflow-server.png</image>
+			<caption>Uniflow in server mode on KDE</caption>
 		</screenshot>
 		<screenshot>
-			<image>https://deskflow.org/screenshots/deskflow-log.png</image>
-			<caption>Deskflow with the log visible on KDE</caption>
+			<image>https://uniflow.org/screenshots/uniflow-log.png</image>
+			<caption>Uniflow with the log visible on KDE</caption>
 		</screenshot>
 		<screenshot>
-			<image>https://deskflow.org/screenshots/deskflow-client-dark.png</image>
-			<caption>Deskflow in client mode on KDE (dark mode)</caption>
+			<image>https://uniflow.org/screenshots/uniflow-client-dark.png</image>
+			<caption>Uniflow in client mode on KDE (dark mode)</caption>
 		</screenshot>
 		<screenshot>
-			<image>https://deskflow.org/screenshots/deskflow-server-dark.png</image>
-			<caption>Deskflow in server mode on KDE (dark mode)</caption>
+			<image>https://uniflow.org/screenshots/uniflow-server-dark.png</image>
+			<caption>Uniflow in server mode on KDE (dark mode)</caption>
 		</screenshot>
 		<screenshot>
-			<image>https://deskflow.org/screenshots/deskflow-log-dark.png</image>
-			<caption>Deskflow with the log visible on KDE (dark mode)</caption>
+			<image>https://uniflow.org/screenshots/uniflow-log-dark.png</image>
+			<caption>Uniflow with the log visible on KDE (dark mode)</caption>
 		</screenshot>
 	</screenshots>
-	<provides> <id>org.deskflow.deskflow.desktop</id> </provides>
+	<provides> <id>org.uniflow.uniflow.desktop</id> </provides>
 	<categories>
 		<category>Utility</category>
 	</categories>
@@ -89,7 +89,7 @@
 					<li>New: Replace broken scroll speed with a scroll scaling options</li>
 					<li>Fix: Horizontal scrolling is working again on all platforms</li>
 					<li>Fix: Key repeat events are now sent as repeat not press and release</li>
-					<li>Fix: Deskflow-core correctly blocks new instances when run without the `--new-instance` option</li>
+					<li>Fix: Uniflow-core correctly blocks new instances when run without the `--new-instance` option</li>
 					<li>Fix: Server Mode, Only use the external config path if the option is enabled</li>
 					<li>Fix: Allow comma and semicolon to be used in the hotkey configuration</li>
 					<li>Fix: Gui can crash when clearing settings in debug mode</li>
@@ -97,7 +97,7 @@
 					<li>Fix: macOS, crash when the log is opened and the gui minimized</li>
 					<li>Fix: macOS, restore Preferences menu entry when the application is using non english language</li>
 					<li>Fix: macOS, try icon was not showing when in `Colorful` mode</li>
-					<li>Fix: macOS, do not allow the os to kill deskflow for memory reasons</li>
+					<li>Fix: macOS, do not allow the os to kill uniflow for memory reasons</li>
 					<li>Fix: macOS, possible server crash when a client disconnects abruptly</li>
 					<li>Fix: macOS, possible crash on screen wake / screen saver activation</li>
 					<li>Fix: macOS, Wrong keys send when using "RIME" input method</li>
@@ -111,7 +111,7 @@
 					<li>Consolidate Debug levels to remove DEBUG3-5 levels</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.26.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.26.0</url>
 		</release>
 		<release version="1.25.0" date="2025-11-21" urgency="high">
 			<description>
@@ -131,7 +131,7 @@
 					<li>Expose setting to allow use of wl-clipboard backend on Wayland</li>
 					<li>Fixed the port settings not being used from settings</li>
 					<li>Save the geometry info into a state file</li>
-					<li>The Core (deskflow-core) has a new CLI interface</li>
+					<li>The Core (uniflow-core) has a new CLI interface</li>
 					<li>Fixed Wayland sleep inhibit on client</li>
 					<li>Fixed XWindowsScreen: properly calculate xrandr/xinerama screens</li>
 					<li>Fixed XWindowsScreen: stop centering panned screens on client when leaving the screen</li>
@@ -141,7 +141,7 @@
 					<li>Fixed crash caused by hostnames with invalid characters returned default value</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.25.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.25.0</url>
 		</release>
 		<release version="1.24.0" date="2025-09-11" urgency="high">
 			<description>
@@ -151,8 +151,8 @@
 					<li>Fix: AltGr and other modifiers are generally detected better.</li>
 					<li>Fix: Big Endian test failures</li>
 					<li>Fix: Client scroll direction being ignored on wayland clients.</li>
-					<li>Feat: Unify deskflow-client and deskflow-server into one binary deskflow-core.</li>
-					<li>Feat: Prevent more than one instance of deskflow-core starting.</li>
+					<li>Feat: Unify uniflow-client and uniflow-server into one binary uniflow-core.</li>
+					<li>Feat: Prevent more than one instance of uniflow-core starting.</li>
 					<li>Feat: Remove defunct --no-xinitthreads option.</li>
 					<li>Feat: Ability to persist remote desktop access</li>
 					<li>Feat: Gui can show all log levels, upgrading users will want to reset their log level as the values have changed</li>
@@ -163,7 +163,7 @@
 					<li>Chore: Clean more sonar smells</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.24.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.24.0</url>
 		</release>
 		<release version="1.23.0" date="2025-07-23" urgency="high">
 			<description>
@@ -183,7 +183,7 @@
 					<li>Chore: Clean more sonar smells</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.23.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.23.0</url>
 		</release>
 		<release version="1.22.0" date="2025-05-28" urgency="high">
 			<description>
@@ -199,7 +199,7 @@
 					<li>Fix: Potential XDG-Portal release issue</li>
 					<li>Fix: Issue where the first start dialog could hang in the background</li>
 					<li>Fix: Edge cases that could cause incorrect settings causing client / server process to crash</li>
-					<li>Fix: Default server config file is Deskflow-server.conf</li>
+					<li>Fix: Default server config file is Uniflow-server.conf</li>
 					<li>Backport: Event Types from downstream</li>
 					<li>Backport: Cleaner error handling from downstream</li>
 					<li>Improve Windows Daemon</li>
@@ -207,7 +207,7 @@
 					<li>Chore: Clean up sonar scan code smells</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.22.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.22.0</url>
 		</release>
 		<release version="1.21.2" date="2025-04-07" urgency="high">
 			<description>
@@ -217,7 +217,7 @@
 					<li>Fix: Windows settings in wrong locations</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.21.2</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.21.2</url>
 		</release>
 		<release version="1.21.1" date="2025-03-31" urgency="high">
 			<description>
@@ -229,7 +229,7 @@
 					<li>Fix: Windows settings saving blocked for non admin users </li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.21.1</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.21.1</url>
 		</release>
 		<release version="1.21.0" date="2025-03-27" urgency="high">
 			<description>
@@ -244,7 +244,7 @@
 					<li>Fix issues with windows installer when msvc is missing</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.21.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.21.0</url>
 		</release>
 		<release version="1.20.1" date="2025-03-07" urgency="low">
 			<description>
@@ -255,7 +255,7 @@
 					<li>Feature: Prevent Windows binaries running if MSVC runtime too old</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.20.1</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.20.1</url>
 		</release>
 		<release version="1.20.0" date="2025-03-03" urgency="high">
 			<description>
@@ -271,7 +271,7 @@
 					<li>Win32: Fix clear settings</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.20.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.20.0</url>
 		</release>
 		<release version="1.19.0" date="2025-01-31" urgency="high">
 			<description>
@@ -291,7 +291,7 @@
 					<li>Lots of Internal Cleanup</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.19.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.19.0</url>
 		</release>
 		<release version="1.18.0" date="2024-12-26" urgency="high">
 			<description>
@@ -301,7 +301,7 @@
 					<li>Fix CVE-2021-42074: Handle SSL race conditions and segmentation fault</li>
 					<li>Fix CVE-2021-42076: Enforce maximum message length </li>
 					<li>Add a visiblity toggle for the log</li>
-					<li>Fix deskflow will now hide or show when the tray icon is clicked</li>
+					<li>Fix uniflow will now hide or show when the tray icon is clicked</li>
 					<li>Fix how Utf-16 surrogates are handled</li>
 					<li>Avoid encoding empty data to the clipboard on Windows</li>
 					<li>Create new Tray Icons for windows</li>
@@ -310,7 +310,7 @@
 					<li>Update the windows clipboard format listener to monitor the clipboard</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.18.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.18.0</url>
 		</release>
 		<release version="1.17.2" date="2024-11-20" urgency="medium">
 			<description>
@@ -329,7 +329,7 @@
 					<li>chore: alphabetize app.qrc resource file</li>
 					<li>chore rm: unused app.svg</li>
 					<li>refactor: mv res/app.png and res/app.svg => deploy</li>
-					<li>refactor: mv res/dist/linux/app.desktop.in => deploy/org.deskflow.desktop</li>
+					<li>refactor: mv res/dist/linux/app.desktop.in => deploy/org.uniflow.desktop</li>
 					<li>refactor: mv res/dist/arch => deploy/dist/arch</li>
 					<li>chore: rm unneeded res/dist/flatpak/flatpak-desktop.patch</li>
 					<li>refactor: mv res/dist/flatpak => deploy/res/flatpak</li>
@@ -338,7 +338,7 @@
 					<li>build: add metainfo</li>
 					<li>ci: rename ci.yml to => continuous-integration.yml</li>
 					<li>Rename CI badge to match new .yml filename</li>
-					<li>chore: update the deskflow shipped icon to have proper padding</li>
+					<li>chore: update the uniflow shipped icon to have proper padding</li>
 					<li>chore: adjust branding light / dark colors to dddddd / 555555</li>
 					<li>fix: SettingsDialog ui generating nonsence alignment tags when edited</li>
 					<li>feat: SettingsDialog, Allow user to toggle the check for updates settings</li>
@@ -364,7 +364,7 @@
 					<li>ci: build flatpaks</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.17.2</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.17.2</url>
 		</release>
 		<release version="1.17.1" date="2024-11-07" urgency="high">
 			<description>
@@ -464,8 +464,8 @@
 					<li>docs: Fixed sponsor link in README</li>
 					<li>User docs</li>
 					<li>chore: settingsDialog rm unused CoreTool include</li>
-					<li>Do not build deskflow legacy</li>
-					<li>build: add deskflow devs to binaries copyright</li>
+					<li>Do not build uniflow legacy</li>
+					<li>build: add uniflow devs to binaries copyright</li>
 					<li>doc: correct target for documents</li>
 					<li>docs: Improve error messages around Doxygen</li>
 					<li>fix: crash on --help arg</li>
@@ -481,15 +481,15 @@
 					<li>ci: adjust pacakge script to use the names we would like when in cpack</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.17.1</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.17.1</url>
 		</release>
 		<release version="1.17.0" date="2024-10-02" urgency="low">
 			<description>
-				<p>This is the first Deskflow release.</p>
+				<p>This is the first Uniflow release.</p>
 				<ul>
-					<li>Use Deskflow Name</li>
+					<li>Use Uniflow Name</li>
 					<li>fix: windows build typos</li>
-					<li>Fix broken CI caused by renaming project to Deskflow</li>
+					<li>Fix broken CI caused by renaming project to Uniflow</li>
 					<li>fix: protocol compatibility with Synergy</li>
 					<li>Remove Google Drive upload and always upload to GitHub</li>
 					<li>fix: stuck keys on leave</li>
@@ -506,11 +506,11 @@
 					<li>build: script to create Python virtual env</li>
 					<li>build: set BUILD_DATE instead of using __DATE__</li>
 					<li>ci: delete ChangeLog because it's redundant</li>
-					<li>feat: use new Deskflow graphics</li>
+					<li>feat: use new Uniflow graphics</li>
 					<li>fix: various typos found by unit193</li>
 					<li>docs: add new logo to readme and update screenshot</li>
 					<li>ci: use workflow_run to comment on PRs</li>
-					<li>feat: change most domains to Deskflow</li>
+					<li>feat: change most domains to Uniflow</li>
 					<li>feat: ask for permission before update check</li>
 					<li>ci: remove restore-keys for vcpkg and use local bootstrap</li>
 					<li>ci: add pr comment based on ci result</li>
@@ -531,7 +531,7 @@
 					<li>Use sonarsource/sonarcloud-github-c-cpp</li>
 				</ul>
 			</description>
-			<url>https://github.com/deskflow/deskflow/releases/tag/v1.17.0</url>
+			<url>https://github.com/uniflow/uniflow/releases/tag/v1.17.0</url>
 		</release>
 	</releases>
 </component>

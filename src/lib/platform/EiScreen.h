@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2024, 2026 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2022, 2026 Red Hat, Inc.
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "deskflow/IScreen.h"
-#include "deskflow/PlatformScreen.h"
+#include "uniflow/IScreen.h"
+#include "uniflow/PlatformScreen.h"
 #include "platform/XDGPowerManager.h"
 
 #include <climits>

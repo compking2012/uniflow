@@ -1,14 +1,14 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2003 Chris Schoeneman
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/Screen.h"
+#include "uniflow/Screen.h"
 #include "base/IEventQueue.h"
 #include "base/Log.h"
-#include "deskflow/IPlatformScreen.h"
+#include "uniflow/IPlatformScreen.h"
 
 #include <QProcess>
 

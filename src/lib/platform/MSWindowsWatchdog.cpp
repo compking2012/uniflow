@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2012 - 2025 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
@@ -13,7 +13,7 @@
 #include "base/TMethodJob.h"
 #include "common/Constants.h"
 #include "common/LogLevel.h"
-#include "deskflow/App.h"
+#include "uniflow/App.h"
 #include "mt/Thread.h"
 #include "platform/MSWindowsHandle.h"
 
@@ -37,9 +37,9 @@ HANDLE openProcessForKill(const PROCESSENTRY32 &entry)
   if (entry.th32ProcessID == 0)
     return nullptr;
 
-  if (_wcsicmp(entry.szExeFile, L"deskflow-client.exe") != 0 && //
-      _wcsicmp(entry.szExeFile, L"deskflow-server.exe") != 0 && //
-      _wcsicmp(entry.szExeFile, L"deskflow-core.exe") != 0) {
+  if (_wcsicmp(entry.szExeFile, L"uniflow-client.exe") != 0 && //
+      _wcsicmp(entry.szExeFile, L"uniflow-server.exe") != 0 && //
+      _wcsicmp(entry.szExeFile, L"uniflow-core.exe") != 0) {
     return nullptr;
   }
 

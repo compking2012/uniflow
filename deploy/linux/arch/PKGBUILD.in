@@ -1,6 +1,6 @@
-# SPDX-FileCopyrightText: (C) 2024 Deskflow Developers
+# SPDX-FileCopyrightText: (C) 2024 Uniflow Developers
 # SPDX-License-Identifier: MIT
-# Maintainer: Deskflow Developers
+# Maintainer: Uniflow Developers
 
 _basename=@CMAKE_PROJECT_NAME@
 pkgname=${_basename}-git

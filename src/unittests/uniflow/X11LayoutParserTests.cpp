@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Chris Rizzitello <sithlord48@gmail.com>
  * SPDX-FileCopyrightText: (C) 2014 - 2016 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
@@ -7,7 +7,7 @@
 
 #include "X11LayoutParserTests.h"
 
-#include "deskflow/unix/X11LayoutsParser.h"
+#include "uniflow/unix/X11LayoutsParser.h"
 
 void X11LayoutParserTests::initTestCase()
 {

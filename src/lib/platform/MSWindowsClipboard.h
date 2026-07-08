@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "deskflow/IClipboard.h"
+#include "uniflow/IClipboard.h"
 
 #include <mutex>
 #include <vector>

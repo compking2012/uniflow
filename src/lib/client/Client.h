@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 - 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016, 2026 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include "deskflow/IClient.h"
+#include "uniflow/IClient.h"
 
 #include "base/EventTypes.h"
 #include "common/Enums.h"
-#include "deskflow/IClipboard.h"
+#include "uniflow/IClipboard.h"
 #include "net/NetworkAddress.h"
 
 #include <climits>

@@ -1,15 +1,15 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2013 - 2016 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/StreamChunker.h"
+#include "uniflow/StreamChunker.h"
 
 #include "base/Event.h"
 #include "base/IEventQueue.h"
 #include "base/Log.h"
-#include "deskflow/ClipboardChunk.h"
+#include "uniflow/ClipboardChunk.h"
 
 static const size_t g_chunkSize = 512 * 1024; // 512kb
 

@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2004 Chris Schoeneman
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "deskflow/IKeyState.h"
-#include "deskflow/KeyMap.h"
+#include "uniflow/IKeyState.h"
+#include "uniflow/KeyMap.h"
 
 //! Core key state
 /*!

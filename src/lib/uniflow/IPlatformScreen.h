@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include "deskflow/ClipboardTypes.h"
-#include "deskflow/IKeyState.h"
-#include "deskflow/IPrimaryScreen.h"
-#include "deskflow/IScreen.h"
-#include "deskflow/ISecondaryScreen.h"
-#include "deskflow/OptionTypes.h"
+#include "uniflow/ClipboardTypes.h"
+#include "uniflow/IKeyState.h"
+#include "uniflow/IPrimaryScreen.h"
+#include "uniflow/IScreen.h"
+#include "uniflow/ISecondaryScreen.h"
+#include "uniflow/OptionTypes.h"
 
 class IClipboard;
 

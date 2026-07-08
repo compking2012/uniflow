@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2026 Deskflow Developers
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
@@ -8,9 +8,9 @@
 
 #include "base/IEventQueue.h"
 #include "base/Log.h"
-#include "deskflow/MonitorNames.h"
-#include "deskflow/ProtocolTypes.h"
-#include "deskflow/ProtocolUtil.h"
+#include "uniflow/MonitorNames.h"
+#include "uniflow/ProtocolTypes.h"
+#include "uniflow/ProtocolUtil.h"
 
 #include <cstring>
 

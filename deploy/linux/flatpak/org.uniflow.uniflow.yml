@@ -1,8 +1,8 @@
-app-id: org.deskflow.deskflow
+app-id: org.uniflow.uniflow
 runtime: org.kde.Platform
 runtime-version: "6.10"
 sdk: org.kde.Sdk
-command: deskflow
+command: uniflow
 finish-args:
   - --share=ipc
   - --socket=wayland
@@ -79,7 +79,7 @@ modules:
           tag-pattern: ^([\\d.]+)$
     cleanup:
       - '*'
-  - name: deskflow
+  - name: uniflow
     buildsystem: cmake-ninja
     config-opts:
       - "-DCMAKE_BUILD_TYPE=Release"

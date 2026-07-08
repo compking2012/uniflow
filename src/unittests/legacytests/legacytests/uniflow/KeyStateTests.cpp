@@ -1,13 +1,13 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2011 Nick Bolton
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "unittests/legacytests/mock/deskflow/MockEventQueue.h"
-#include "unittests/legacytests/mock/deskflow/MockKeyMap.h"
-#include "unittests/legacytests/mock/deskflow/MockKeyState.h"
+#include "unittests/legacytests/mock/uniflow/MockEventQueue.h"
+#include "unittests/legacytests/mock/uniflow/MockKeyMap.h"
+#include "unittests/legacytests/mock/uniflow/MockKeyState.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

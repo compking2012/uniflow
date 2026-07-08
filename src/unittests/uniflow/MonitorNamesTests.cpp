@@ -1,12 +1,12 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2026 Deskflow Developers
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
 #include "MonitorNamesTests.h"
 
-#include "deskflow/MonitorNames.h"
+#include "uniflow/MonitorNames.h"
 
 using deskflow::joinMonitorNames;
 using deskflow::splitMonitorNames;

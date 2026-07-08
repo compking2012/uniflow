@@ -1,14 +1,14 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2015 - 2016 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
 #pragma once
 
-#include "deskflow/Chunk.h"
-#include "deskflow/ClipboardTypes.h"
-#include "deskflow/ProtocolTypes.h"
+#include "uniflow/Chunk.h"
+#include "uniflow/ClipboardTypes.h"
+#include "uniflow/ProtocolTypes.h"
 
 #include <cstddef>
 #include <string>

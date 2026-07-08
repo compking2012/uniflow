@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Chris Rizzitello <sithlord48@gmail.com>
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
@@ -18,6 +18,6 @@ private Q_SLOTS:
 
 private:
   inline static const QString m_settingsPath = QStringLiteral("tmp/test");
-  inline static const QString m_settingsFile = QStringLiteral("%1/Deskflow.conf").arg(m_settingsPath);
-  inline static const QString m_stateFile = QStringLiteral("%1/Deskflow.state").arg(m_settingsPath);
+  inline static const QString m_settingsFile = QStringLiteral("%1/Uniflow.conf").arg(m_settingsPath);
+  inline static const QString m_stateFile = QStringLiteral("%1/Uniflow.state").arg(m_settingsPath);
 };

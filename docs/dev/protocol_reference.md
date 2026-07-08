@@ -1,10 +1,10 @@
 # Protocol Reference {#protocol_reference}
 
-This document provides a comprehensive reference for the Deskflow network protocol. It is the primary source of information for developers implementing Deskflow clients or extending the protocol.
+This document provides a comprehensive reference for the Uniflow network protocol. It is the primary source of information for developers implementing Uniflow clients or extending the protocol.
 
 ## Protocol Overview
 
-The Deskflow protocol enables keyboard and mouse sharing between multiple computers over a TCP network connection. The protocol uses two distinct sets of terminology to describe the roles of the computers involved:
+The Uniflow protocol enables keyboard and mouse sharing between multiple computers over a TCP network connection. The protocol uses two distinct sets of terminology to describe the roles of the computers involved:
 
 - **Network Role (Client/Server)**: This describes the connection architecture.
   - **Server**: The machine that listens for incoming TCP connections.
@@ -368,9 +368,9 @@ Client                                 Server
   |                                      | TCP connection established
   |                                      |
   | ◄─────────────────────────────────── |
-  | "Deskflow" + version (1.8)           | Hello message
+  | "Uniflow" + version (1.8)           | Hello message
   |                                      |
-  | "Deskflow" + version + name          |
+  | "Uniflow" + version + name          |
   | ───────────────────────────────────► | HelloBack message
   |                                      |
   | ◄─────────────────────────────────── |
@@ -450,7 +450,7 @@ Client                                 Server
 ### Debug Tools
 
 - **Wireshark**: Capture and analyze network traffic
-- **Protocol Logs**: Enable verbose logging in Deskflow
+- **Protocol Logs**: Enable verbose logging in Uniflow
 - **Message Validation**: Check message format against specification
 
 ## Platform-Specific Implementations

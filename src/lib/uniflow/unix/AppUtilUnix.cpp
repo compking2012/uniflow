@@ -1,17 +1,17 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/unix/AppUtilUnix.h"
+#include "uniflow/unix/AppUtilUnix.h"
 
 #include "base/Log.h"
 #include "common/PlatformInfo.h"
 
 #if WINAPI_XWINDOWS
-#include "deskflow/unix/X11LayoutsParser.h"
+#include "uniflow/unix/X11LayoutsParser.h"
 #include <X11/XKBlib.h>
 #elif defined(Q_OS_MAC)
 #include <Carbon/Carbon.h>

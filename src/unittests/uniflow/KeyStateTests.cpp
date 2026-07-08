@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Chris Rizzitello <sithlord48@gmail.com>
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2011 Nick Bolton
@@ -8,7 +8,7 @@
 
 #include "KeyStateTests.h"
 #include "base/EventQueue.h"
-#include "deskflow/KeyMap.h"
+#include "uniflow/KeyMap.h"
 
 #include "MockEventQueue.h"
 #include "MockKeyMap.h"

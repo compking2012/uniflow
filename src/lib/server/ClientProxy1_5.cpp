@@ -1,13 +1,13 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2013 - 2016 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
 #include "server/ClientProxy1_5.h"
 
-#include "deskflow/ProtocolUtil.h"
-#include "deskflow/StreamChunker.h"
+#include "uniflow/ProtocolUtil.h"
+#include "uniflow/StreamChunker.h"
 #include "io/IStream.h"
 #include "server/Server.h"
 

@@ -1,14 +1,14 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2004 Chris Schoeneman
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/PlatformScreen.h"
+#include "uniflow/PlatformScreen.h"
 #include "base/DirectionTypes.h"
-#include "deskflow/App.h"
+#include "uniflow/App.h"
 
 PlatformScreen::PlatformScreen(IEventQueue *events) : IPlatformScreen(events)
 {

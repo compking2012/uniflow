@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 - 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016, 2026 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -14,15 +14,15 @@
 #include "client/ServerProxy.h"
 #include "common/NetworkProtocol.h"
 #include "common/Settings.h"
-#include "deskflow/Clipboard.h"
-#include "deskflow/DeskflowException.h"
-#include "deskflow/IPlatformScreen.h"
-#include "deskflow/PacketStreamFilter.h"
-#include "deskflow/ProtocolTypes.h"
-#include "deskflow/ProtocolUtil.h"
-#include "deskflow/Screen.h"
-#include "deskflow/StreamChunker.h"
-#include "deskflow/ipc/CoreIpc.h"
+#include "uniflow/Clipboard.h"
+#include "uniflow/UniflowException.h"
+#include "uniflow/IPlatformScreen.h"
+#include "uniflow/PacketStreamFilter.h"
+#include "uniflow/ProtocolTypes.h"
+#include "uniflow/ProtocolUtil.h"
+#include "uniflow/Screen.h"
+#include "uniflow/StreamChunker.h"
+#include "uniflow/ipc/CoreIpc.h"
 #include "net/IDataSocket.h"
 #include "net/ISocketFactory.h"
 #include "net/SecureSocket.h"

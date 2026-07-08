@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -10,7 +10,7 @@
 
 #include "arch/Arch.h"
 #include "arch/IArchMultithread.h"
-#include "deskflow/App.h"
+#include "uniflow/App.h"
 #include "net/NetworkAddress.h"
 #include "server/Config.h"
 

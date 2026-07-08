@@ -1,12 +1,12 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 - 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/ClientApp.h"
+#include "uniflow/ClientApp.h"
 
 #include "base/Event.h"
 #include "base/IEventQueue.h"
@@ -15,9 +15,9 @@
 #include "common/ExitCodes.h"
 #include "common/PlatformInfo.h"
 #include "common/Settings.h"
-#include "deskflow/Screen.h"
-#include "deskflow/ScreenException.h"
-#include "deskflow/ipc/CoreIpc.h"
+#include "uniflow/Screen.h"
+#include "uniflow/ScreenException.h"
+#include "uniflow/ipc/CoreIpc.h"
 #include "net/NetworkAddress.h"
 #include "net/SocketException.h"
 #include "net/SocketMultiplexer.h"
@@ -94,8 +94,8 @@ void ClientApp::parseArgs()
 const char *ClientApp::daemonName() const
 {
   if (deskflow::platform::isWindows())
-    return "Deskflow Client";
-  return "deskflow-client";
+    return "Uniflow Client";
+  return "uniflow-client";
 }
 
 deskflow::Screen *ClientApp::createScreen()

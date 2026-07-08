@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2015 - 2022 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
@@ -9,7 +9,7 @@
 #include <sstream>
 
 #include <base/Log.h>
-#include <deskflow/ipc/CoreIpc.h>
+#include <uniflow/ipc/CoreIpc.h>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
 

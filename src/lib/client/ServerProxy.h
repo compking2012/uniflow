@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "deskflow/ClipboardChunk.h"
-#include "deskflow/ClipboardTypes.h"
-#include "deskflow/KeyTypes.h"
-#include "deskflow/KeyboardLayoutManager.h"
+#include "uniflow/ClipboardChunk.h"
+#include "uniflow/ClipboardTypes.h"
+#include "uniflow/KeyTypes.h"
+#include "uniflow/KeyboardLayoutManager.h"
 
 class Client;
 class ClientInfo;

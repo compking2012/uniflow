@@ -1,12 +1,12 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2026 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2025 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2002 Chris Schoeneman
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
-#include "deskflow/win32/AppUtilWindows.h"
+#include "uniflow/win32/AppUtilWindows.h"
 
 #include "arch/Arch.h"
 #include "arch/win32/ArchDaemonWindows.h"
@@ -17,9 +17,9 @@
 #include "base/Log.h"
 #include "base/LogOutputters.h"
 #include "common/Constants.h"
-#include "deskflow/App.h"
-#include "deskflow/DeskflowException.h"
-#include "deskflow/Screen.h"
+#include "uniflow/App.h"
+#include "uniflow/UniflowException.h"
+#include "uniflow/Screen.h"
 #include "mt/Thread.h"
 #include "platform/MSWindowsScreen.h"
 

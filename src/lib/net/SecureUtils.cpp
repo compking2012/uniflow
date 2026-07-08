@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2021 Barrier Contributors
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
@@ -88,7 +88,7 @@ void generatePemSelfSignedCert(const QString &path, int keyLength)
   if (!name) {
     throw std::runtime_error("could not allocate subject name");
   }
-  X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_ASC, reinterpret_cast<const unsigned char *>("Deskflow"), -1, -1, 0);
+  X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_ASC, reinterpret_cast<const unsigned char *>("Uniflow"), -1, -1, 0);
   X509_set_subject_name(cert, name);
   X509_set_issuer_name(cert, name);
   X509_NAME_free(name);

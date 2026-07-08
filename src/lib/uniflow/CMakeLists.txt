@@ -15,8 +15,8 @@ elseif(UNIX)
   set(PLATFORM_CODE
     unix/AppUtilUnix.cpp
     unix/AppUtilUnix.h
-    unix/DeskflowXkbKeyboard.cpp
-    unix/DeskflowXkbKeyboard.h
+    unix/UniflowXkbKeyboard.cpp
+    unix/UniflowXkbKeyboard.h
     unix/ISO639Table.h
     unix/X11LayoutsParser.cpp
     unix/X11LayoutsParser.h
@@ -37,8 +37,8 @@ add_library(${lib_name} STATIC ${PLATFORM_CODE}
   Clipboard.h
   ClipboardChunk.cpp
   ClipboardChunk.h
-  DeskflowException.cpp
-  DeskflowException.h
+  UniflowException.cpp
+  UniflowException.h
   DisplayInvalidException.h
   IApp.h
   IClient.h

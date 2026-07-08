@@ -1,12 +1,12 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2015 - 2016 Synergy App Ltd
  * SPDX-License-Identifier: GPL-2.0-only WITH LicenseRef-OpenSSL-Exception
  */
 
 #include "server/ClientProxy1_7.h"
 #include "base/Log.h"
-#include "deskflow/ProtocolUtil.h"
+#include "uniflow/ProtocolUtil.h"
 #include "server/Server.h"
 
 //

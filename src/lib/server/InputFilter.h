@@ -1,5 +1,5 @@
 /*
- * Deskflow -- mouse and keyboard sharing utility
+ * Uniflow -- mouse and keyboard sharing utility
  * SPDX-FileCopyrightText: (C) 2025 Deskflow Developers
  * SPDX-FileCopyrightText: (C) 2012 - 2016 Synergy App Ltd
  * SPDX-FileCopyrightText: (C) 2005 Chris Schoeneman
@@ -9,9 +9,9 @@
 #pragma once
 
 #include "base/DirectionTypes.h"
-#include "deskflow/IPlatformScreen.h"
-#include "deskflow/KeyTypes.h"
-#include "deskflow/MouseTypes.h"
+#include "uniflow/IPlatformScreen.h"
+#include "uniflow/KeyTypes.h"
+#include "uniflow/MouseTypes.h"
 
 #include <set>
 
